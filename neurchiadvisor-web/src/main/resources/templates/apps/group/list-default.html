@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+	<!-- begin::Head -->
+	<head>
+
+		<!--begin::Base Path (base relative path for assets of this page) -->
+		<base href="/">
+
+		<!--end::Base Path -->
+		<meta charset="utf-8" />
+		<title>NeurchiAdvisor | Groupes</title>
+		<meta name="description" content="Liste des groupes">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<th:block th:insert="/layout :: fonts"/>
+
+		<th:block th:insert="/layout :: stylesheets"/>
+	</head>
+
+	<!-- end::Head -->
+
+	<!-- begin::Body -->
+	<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+		<!-- begin:: Page -->
+
+		<!-- begin:: Header Mobile -->
+		<div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
+			<div class="kt-header-mobile__logo">
+				<a href="/">
+					<img alt="Logo" src="./assets/media/logos/logo-light.png" />
+				</a>
+			</div>
+			<div class="kt-header-mobile__toolbar">
+				<button class="kt-header-mobile__toggler kt-header-mobile__toggler--left" id="kt_aside_mobile_toggler"><span></span></button>
+				<button class="kt-header-mobile__toggler" id="kt_header_mobile_toggler"><span></span></button>
+				<button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i class="flaticon-more"></i></button>
+			</div>
+		</div>
+
+		<!-- end:: Header Mobile -->
+		<div class="kt-grid kt-grid--hor kt-grid--root">
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+				<!-- begin:: Aside -->
+				<button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
+				<div th:replace="/layout :: aside" class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside"></div>
+
+				<!-- end:: Aside -->
+				<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+					<!-- begin:: Header -->
+					<div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed ">
+
+						<!-- begin:: Header Menu -->
+						<button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
+						<div th:replace="/layout :: header-menu-wrapper" class="kt-header-menu-wrapper" id="kt_header_menu_wrapper">
+							<div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default ">
+							</div>
+						</div>
+
+						<!-- end:: Header Menu -->
+
+						<!-- begin:: Header Topbar -->
+						<div th:replace="/layout :: header-topbar" class="kt-header__topbar">
+
+						</div>
+
+						<!-- end:: Header Topbar -->
+					</div>
+
+					<!-- end:: Header -->
+					<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+						<!-- begin:: Content Head -->
+						<div class="kt-subheader   kt-grid__item" id="kt_subheader">
+							<div class="kt-subheader__main">
+								<h3 class="kt-subheader__title">
+									Groupes
+								</h3>
+								<span class="kt-subheader__separator kt-subheader__separator--v"></span>
+								<div class="kt-subheader__group" id="kt_subheader_search">
+									<span class="kt-subheader__desc" id="kt_subheader_total" th:text="${page.totalElements + ' Total'}">
+										0 Total
+									</span>
+									<form class="kt-margin-l-20" id="kt_subheader_search_form" th:action="@{/apps/group/list-default.html}" th:object="${search}" method="get">
+										<div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+											<input type="text" class="form-control" placeholder="Rechercher..." id="generalSearch" th:field="*{query}">
+											<span class="kt-input-icon__icon kt-input-icon__icon--right">
+												<span>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+														<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+															<rect id="bound" x="0" y="0" width="24" height="24" />
+															<path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" id="Path-2" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+															<path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" id="Path" fill="#000000" fill-rule="nonzero" />
+														</g>
+													</svg>
+
+													<!--<i class="flaticon2-search-1"></i>-->
+												</span>
+											</span>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div class="kt-subheader__toolbar">
+								<a href="#" class="">
+								</a>
+								<a href="apps/group/add-group.html" class="btn btn-label-brand btn-bold">
+									Ajouter Groupe </a>
+								<div class="kt-subheader__wrapper">
+									<div class="dropdown dropdown-inline" data-toggle="kt-tooltip-"
+										 title="Actions Rapides" data-placement="left">
+										<a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                 viewBox="0 0 24 24" version="1.1"
+                                                 class="kt-svg-icon kt-svg-icon--success kt-svg-icon--md">
+												<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<polygon id="Shape" points="0 0 24 0 24 24 0 24" />
+													<path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+													<path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" id="Combined-Shape" fill="#000000" />
+												</g>
+											</svg>
+
+											<!--<i class="flaticon2-plus"></i>-->
+										</a>
+										<div class="dropdown-menu dropdown-menu-fit dropdown-menu-md dropdown-menu-right">
+
+											<!--begin::Nav-->
+											<ul class="kt-nav">
+												<li class="kt-nav__head">
+													Ajouter Nouveau:
+													<i class="flaticon2-information" data-toggle="kt-tooltip"
+													   data-placement="right"
+													   title="Importer un rapport de statistique provenant de facebook..."></i>
+												</li>
+												<li class="kt-nav__separator"></li>
+												<li class="kt-nav__item">
+													<a href="#" class="kt-nav__link">
+														<i class="kt-nav__link-icon flaticon2-sheet"></i>
+														<span class="kt-nav__link-text">Rapport de Statistiques</span>
+													</a>
+												</li>
+											</ul>
+
+											<!--end::Nav-->
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- end:: Content Head -->
+
+						<!-- begin:: Content -->
+						<div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+							<!--begin:: Widgets/Applications/Group/Profile-->
+							<div class="kt-portlet" th:each="group : ${page}">
+								<div class="kt-portlet__body">
+									<div class="kt-widget kt-widget--user-profile-3">
+										<div class="kt-widget__top">
+											<div class="kt-widget__media kt-hidden-">
+												<img th:src="@{${group.cover}}" alt="cover">
+											</div>
+											<div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+												JM
+											</div>
+											<div class="kt-widget__content">
+												<div class="kt-widget__head">
+													<a href="#" class="kt-widget__username" th:inline="text">
+														[[${group.name}]]
+														<i th:if="${group.verified}" class="flaticon2-correct kt-font-success"></i>
+													</a>
+													<div class="kt-widget__action">
+														<button type="button" class="btn btn-label-success btn-sm btn-upper">écrire un avis</button>&nbsp;
+														<button type="button" class="btn btn-brand btn-sm btn-upper">contribuer</button>
+													</div>
+												</div>
+												<div class="kt-widget__subhead">
+													<a href="#"><i class="flaticon2-calendar-7"></i>[[${'Groupe créé le ' + #temporals.format(group.creationDate, 'dd MMMM yyyy')}]]</a>
+												</div>
+												<div class="kt-widget__info">
+													<div class="kt-widget__desc" th:text="${group.description}"></div>
+													<div class="kt-widget__progress">
+														<div class="kt-widget__text">
+															Exhaustivité
+														</div>
+														<div class="progress" style="height: 5px;width: 100%;">
+															<div class="progress-bar"
+																 th:classappend="${group.completeness > 0.85} ? 'kt-bg-success' : (${group.completeness > 0.55} ? 'kt-bg-warning' : 'kt-bg-danger')"
+																 role="progressbar"
+																 th:style="|width: ${group.completenessPercentage}|"
+																 th:attr="aria-valuenow=${group.completeness}"
+																 aria-valuemin="0"
+																 aria-valuemax="100"></div>
+														</div>
+														<div class="kt-widget__stats" th:text="${group.completenessPercentage}">
+															0%
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="kt-widget__bottom">
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-users"></i>
+												</div>
+												<div class="kt-widget__details">
+													<span class="kt-widget__title">Nombre de membres</span>
+													<span class="kt-widget__value" th:text="${group.memberCount + ' membres'}">0 membres</span>
+												</div>
+											</div>
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-medal"></i>
+												</div>
+												<div class="kt-widget__details">
+													<span class="kt-widget__title">Qualité modération</span>
+													<span class="kt-widget__value">Excellente</span>
+												</div>
+											</div>
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-pie-chart"></i>
+												</div>
+												<div class="kt-widget__details">
+													<span class="kt-widget__title">Bord politique</span>
+													<span class="kt-widget__value">Lawful Neutral</span>
+												</div>
+											</div>
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-file-2"></i>
+												</div>
+												<div class="kt-widget__details">
+													<span class="kt-widget__title" th:text="${group.contributionCount + ' Contributions'}">0 Contributions</span>
+													<a href="#" class="kt-widget__value kt-font-brand">Voir les contributions</a>
+												</div>
+											</div>
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-chat-1"></i>
+												</div>
+												<div class="kt-widget__details">
+													<span class="kt-widget__title" th:text="${group.opinionCount + ' Avis'}">0 Avis</span>
+													<a href="#" class="kt-widget__value kt-font-brand">Voir les avis</a>
+												</div>
+											</div>
+											<div class="kt-widget__item">
+												<div class="kt-widget__icon">
+													<i class="flaticon-network"></i>
+												</div>
+												<div class="kt-widget__details">
+													<div class="kt-section__content kt-section__content--solid">
+														<div class="kt-badge kt-badge__pics">
+															<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
+																<img src="./assets/media/users/100_7.jpg" alt="image">
+															</a>
+															<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
+																<img src="./assets/media/users/100_3.jpg" alt="image">
+															</a>
+															<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
+																<img src="./assets/media/users/100_2.jpg" alt="image">
+															</a>
+															<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
+																<img src="./assets/media/users/100_13.jpg" alt="image">
+															</a>
+															<a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
+																<img src="./assets/media/users/100_4.jpg" alt="image">
+															</a>
+															<a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+																+7
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<!--end:: Widgets/Applications/Group/Profile-->
+
+							<!--Begin::Section-->
+							<div class="row">
+								<div class="col-xl-12">
+
+									<!--begin:: Components/Pagination/Default-->
+									<div th:replace="/layout :: pagination('groupes')">
+
+									</div>
+
+									<!--end:: Components/Pagination/Default-->
+								</div>
+							</div>
+
+							<!--End::Section-->
+						</div>
+
+						<!-- end:: Content -->
+					</div>
+
+					<th:block th:insert="/layout :: footer"/>
+				</div>
+			</div>
+		</div>
+
+		<!-- end:: Page -->
+
+		<th:block th:insert="/layout :: scrolltop"/>
+
+		<th:block th:insert="/layout :: scripts"/>
+	</body>
+
+	<!-- end::Body -->
+</html>

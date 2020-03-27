@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <!-- begin::Head -->
+    <head th:fragment="head(title, description, pageScript)">
+
+        <!--begin::Base Path (base relative path for assets of this page) -->
+        <base href="/">
+
+        <!--end::Base Path -->
+        <meta charset="utf-8" />
+        <title th:text="'NeurchiAdvisor | ' + ${title}">NeurchiAdvisor | Layout</title>
+        <meta name="description" th:attr="content=${description}"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+        <th:block th:fragment="fonts">
+        <!--begin::Fonts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.16/webfont.js"></script>
+        <script>
+            WebFont.load({
+                google: {
+                    "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"]
+                },
+                active: function() {
+                    sessionStorage.fonts = true;
+                }
+            });
+        </script>
+
+        <!--end::Fonts -->
+        </th:block>
+
+        <!--begin::Page Custom Styles(used by this page) -->
+        <!--end::Page Custom Styles -->
+
+        <th:block th:fragment="stylesheets">
+        <!--begin:: Global Mandatory Vendors -->
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/perfect-scrollbar/1.4.0/css/perfect-scrollbar.css}" />
+
+        <!--end:: Global Mandatory Vendors -->
+
+        <!--begin:: Global Optional Vendors -->
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/tether/1.4.5/dist/css/tether.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-datepicker/1.8.0/dist/css/bootstrap-datepicker3.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-datetime-picker/2.4.4/css/bootstrap-datetimepicker.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-daterangepicker/3.0.3/daterangepicker.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-touchspin/4.2.5/dist/jquery.bootstrap-touchspin.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-select/1.13.9/dist/css/bootstrap-select.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-switch/3.3.4/dist/css/bootstrap3/bootstrap-switch.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/select2/4.0.6/dist/css/select2.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/ion-rangeslider/2.3.0/css/ion.rangeSlider.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/nouislider/13.1.5/distribute/nouislider.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/owl.carousel/2.3.4/dist/assets/owl.carousel.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/owl.carousel/2.3.4/dist/assets/owl.theme.default.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/dropzone/5.5.0/dropzone.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/summernote/0.8.11/dist/summernote.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/animate.css/3.7.0/animate.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/toastr/2.1.4/build/toastr.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/morris.js/0.5.0/morris.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/sweetalert2/8.8.7/dist/sweetalert2.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendors/general/socicon/css/socicon.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendors/custom/vendors/flaticon/flaticon.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/vendors/custom/vendors/flaticon2/flaticon.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.8.2/css/all.min.css}" />
+
+        <!--end:: Global Optional Vendors -->
+
+        <!--begin::Global Theme Styles(used by all pages) -->
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.bundle.css}" />
+
+        <!--end::Global Theme Styles -->
+
+        <!--begin::Layout Skins(used by all pages) -->
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/css/skins/header/base/light.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/css/skins/header/menu/light.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/css/skins/brand/dark.css}" />
+        <link rel="stylesheet" type="text/css" th:href="@{/assets/css/skins/aside/dark.css}" />
+
+        <!--end::Layout Skins -->
+        <link rel="shortcut icon" th:href="@{/assets/media/logos/favicon.ico}" />
+        </th:block>
+    </head>
+
+    <!-- end::Head -->
+
+    <!-- begin::Body -->
+    <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--fixed kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+
+        <!-- begin:: Page -->
+
+        <!-- begin:: Header Mobile -->
+        <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
+            <div class="kt-header-mobile__logo">
+                <a href="/">
+                    <img alt="Logo" src="./assets/media/logos/logo-light.png" />
+                </a>
+            </div>
+            <div class="kt-header-mobile__toolbar">
+                <button class="kt-header-mobile__toggler kt-header-mobile__toggler--left" id="kt_aside_mobile_toggler"><span></span></button>
+                <button class="kt-header-mobile__toggler" id="kt_header_mobile_toggler"><span></span></button>
+                <button class="kt-header-mobile__topbar-toggler" id="kt_header_mobile_topbar_toggler"><i class="flaticon-more"></i></button>
+            </div>
+        </div>
+
+        <!-- end:: Header Mobile -->
+        <div class="kt-grid kt-grid--hor kt-grid--root">
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+
+                <!-- begin:: Aside -->
+                <button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
+                <div th:fragment="aside" class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
+
+                    <!-- begin:: Aside -->
+                    <div class="kt-aside__brand kt-grid__item " id="kt_aside_brand">
+                        <div class="kt-aside__brand-logo">
+                            <a href="/">
+                                <img alt="Logo" src="./assets/media/logos/logo-light.png" />
+                            </a>
+                        </div>
+                        <div class="kt-aside__brand-tools">
+                            <button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler">
+                                        <span><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon id="Shape" points="0 0 24 0 24 24 0 24" />
+                                                    <path d="M5.29288961,6.70710318 C4.90236532,6.31657888 4.90236532,5.68341391 5.29288961,5.29288961 C5.68341391,4.90236532 6.31657888,4.90236532 6.70710318,5.29288961 L12.7071032,11.2928896 C13.0856821,11.6714686 13.0989277,12.281055 12.7371505,12.675721 L7.23715054,18.675721 C6.86395813,19.08284 6.23139076,19.1103429 5.82427177,18.7371505 C5.41715278,18.3639581 5.38964985,17.7313908 5.76284226,17.3242718 L10.6158586,12.0300721 L5.29288961,6.70710318 Z" id="Path-94" fill="#000000" fill-rule="nonzero" transform="translate(8.999997, 11.999999) scale(-1, 1) translate(-8.999997, -11.999999) " />
+                                                    <path d="M10.7071009,15.7071068 C10.3165766,16.0976311 9.68341162,16.0976311 9.29288733,15.7071068 C8.90236304,15.3165825 8.90236304,14.6834175 9.29288733,14.2928932 L15.2928873,8.29289322 C15.6714663,7.91431428 16.2810527,7.90106866 16.6757187,8.26284586 L22.6757187,13.7628459 C23.0828377,14.1360383 23.1103407,14.7686056 22.7371482,15.1757246 C22.3639558,15.5828436 21.7313885,15.6103465 21.3242695,15.2371541 L16.0300699,10.3841378 L10.7071009,15.7071068 Z" id="Path-94" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(15.999997, 11.999999) scale(-1, 1) rotate(-270.000000) translate(-15.999997, -11.999999) " />
+                                                </g>
+                                            </svg></span>
+                                <span><svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon id="Shape" points="0 0 24 0 24 24 0 24" />
+                                                    <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" id="Path-94" fill="#000000" fill-rule="nonzero" />
+                                                    <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" id="Path-94" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) " />
+                                                </g>
+                                            </svg></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- end:: Aside -->
+
+                    <!-- begin:: Aside Menu -->
+                    <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+                        <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
+                        </div>
+                    </div>
+
+                    <!-- end:: Aside Menu -->
+                </div>
+
+                <!-- end:: Aside -->
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+
+                    <!-- begin:: Header -->
+                    <div id="kt_header" class="kt-header kt-grid__item  kt-header--fixed ">
+
+                        <!-- begin:: Header Menu -->
+                        <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
+                        <div th:fragment="header-menu-wrapper" class="kt-header-menu-wrapper" id="kt_header_menu_wrapper">
+                            <div id="kt_header_menu" class="kt-header-menu kt-header-menu-mobile  kt-header-menu--layout-default ">
+                            </div>
+                        </div>
+
+                        <!-- end:: Header Menu -->
+
+                        <!-- begin:: Header Topbar -->
+                        <div th:fragment="header-topbar" class="kt-header__topbar">
+
+                            <!--begin: User Bar -->
+                            <div class="kt-header__topbar-item kt-header__topbar-item--user" sec:authorize="isAuthenticated()">
+                                <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="0px,0px">
+                                    <div class="kt-header__topbar-user">
+                                        <span class="kt-header__topbar-welcome kt-hidden-mobile">Hi,</span>
+                                        <span class="kt-header__topbar-username kt-hidden-mobile" sec:authentication="name">Sylvain</span>
+                                        <img class="kt-hidden" alt="Pic" src="./assets/media/users/300_25.jpg" />
+
+                                        <!--use below badge element instead the user avatar to display username's first letter(remove kt-hidden class to display it) -->
+                                        <span class="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">S</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end: User Bar -->
+                        </div>
+
+                        <!-- end:: Header Topbar -->
+                    </div>
+
+                    <!-- end:: Header -->
+                    <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+
+                        <!-- begin:: Content Head -->
+                        <div class="kt-subheader   kt-grid__item" id="kt_subheader">
+                            <div class="kt-subheader__main">
+                                <h3 class="kt-subheader__title">
+                                    Groupes
+                                </h3>
+                                <span class="kt-subheader__separator kt-subheader__separator--v"></span>
+                                <div class="kt-subheader__group" id="kt_subheader_search">
+                                            <span class="kt-subheader__desc" id="kt_subheader_total" th:text="${page.totalElements + ' Total'}">
+                                                0 Total
+                                            </span>
+                                    <form class="kt-margin-l-20" id="kt_subheader_search_form" th:action="@{/apps/group/list-default.html}" th:object="${search}" method="get">
+                                        <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                                            <input type="text" class="form-control" placeholder="Rechercher..." id="generalSearch" th:field="*{query}">
+                                            <span class="kt-input-icon__icon kt-input-icon__icon--right">
+                                                        <span>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect id="bound" x="0" y="0" width="24" height="24" />
+                                                                    <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" id="Path-2" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                                    <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" id="Path" fill="#000000" fill-rule="nonzero" />
+                                                                </g>
+                                                            </svg>
+
+                                                            <!--<i class="flaticon2-search-1"></i>-->
+                                                        </span>
+                                                    </span>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="kt-subheader__group kt-hidden" id="kt_subheader_group_actions">
+                                    <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:</div>
+                                    <div class="btn-toolbar kt-margin-l-20">
+                                        <div class="dropdown" id="kt_subheader_group_actions_status_change">
+                                            <button type="button" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                Update Status
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <ul class="kt-nav">
+                                                    <li class="kt-nav__section kt-nav__section--first">
+                                                        <span class="kt-nav__section-text">Change status to:</span>
+                                                    </li>
+                                                    <li class="kt-nav__item">
+                                                        <a href="#" class="kt-nav__link" data-toggle="status-change" data-status="1">
+                                                            <span class="kt-nav__link-text"><span class="kt-badge kt-badge--unified-success kt-badge--inline kt-badge--bold">Approved</span></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="kt-nav__item">
+                                                        <a href="#" class="kt-nav__link" data-toggle="status-change" data-status="2">
+                                                            <span class="kt-nav__link-text"><span class="kt-badge kt-badge--unified-danger kt-badge--inline kt-badge--bold">Rejected</span></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="kt-nav__item">
+                                                        <a href="#" class="kt-nav__link" data-toggle="status-change" data-status="3">
+                                                            <span class="kt-nav__link-text"><span class="kt-badge kt-badge--unified-warning kt-badge--inline kt-badge--bold">Pending</span></span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="kt-nav__item">
+                                                        <a href="#" class="kt-nav__link" data-toggle="status-change" data-status="4">
+                                                            <span class="kt-nav__link-text"><span class="kt-badge kt-badge--unified-info kt-badge--inline kt-badge--bold">On Hold</span></span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-label-success btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_fetch" data-toggle="modal" data-target="#kt_datatable_records_fetch_modal">
+                                            Fetch Selected
+                                        </button>
+                                        <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
+                                            Delete All
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kt-subheader__toolbar">
+                                <a href="#" class="">
+                                </a>
+                                <a href="apps/group/add-group.html" class="btn btn-label-brand btn-bold">
+                                    Ajouter Groupe </a>
+                                <div class="kt-subheader__wrapper">
+                                    <div class="dropdown dropdown-inline" data-toggle="kt-tooltip-"
+                                         title="Actions Rapides" data-placement="left">
+                                        <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                 viewBox="0 0 24 24" version="1.1"
+                                                 class="kt-svg-icon kt-svg-icon--success kt-svg-icon--md">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon id="Shape" points="0 0 24 0 24 24 0 24" />
+                                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" id="Combined-Shape" fill="#000000" />
+                                                </g>
+                                            </svg>
+
+                                            <!--<i class="flaticon2-plus"></i>-->
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-fit dropdown-menu-md dropdown-menu-right">
+
+                                            <!--begin::Nav-->
+                                            <ul class="kt-nav">
+                                                <li class="kt-nav__head">
+                                                    Ajouter Nouveau:
+                                                    <i class="flaticon2-information" data-toggle="kt-tooltip"
+                                                       data-placement="right"
+                                                       title="Importer un rapport de statistique provenant de facebook..."></i>
+                                                </li>
+                                                <li class="kt-nav__separator"></li>
+                                                <li class="kt-nav__item">
+                                                    <a href="#" class="kt-nav__link">
+                                                        <i class="kt-nav__link-icon flaticon2-sheet"></i>
+                                                        <span class="kt-nav__link-text">Rapport de Statistiques</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <!--end::Nav-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- end:: Content Head -->
+
+                        <!-- begin:: Content -->
+                        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                            <!--begin:: Widgets/Applications/User/Profile3-->
+                            <div class="kt-portlet" th:each="group : ${page}">
+                                <div class="kt-portlet__body">
+                                    <div class="kt-widget kt-widget--user-profile-3">
+                                        <div class="kt-widget__top">
+                                            <div class="kt-widget__media kt-hidden-">
+                                                <img th:src="@{${group.cover}}" alt="cover">
+                                            </div>
+                                            <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+                                                JM
+                                            </div>
+                                            <div class="kt-widget__content">
+                                                <div class="kt-widget__head">
+                                                    <a href="#" class="kt-widget__username" th:inline="text">
+                                                        [[${group.name}]]
+                                                        <i th:if="${group.verified}" class="flaticon2-correct kt-font-success"></i>
+                                                    </a>
+                                                    <div class="kt-widget__action">
+                                                        <button type="button" class="btn btn-label-success btn-sm btn-upper">écrire un avis</button>&nbsp;
+                                                        <button type="button" class="btn btn-brand btn-sm btn-upper">contribuer</button>
+                                                    </div>
+                                                </div>
+                                                <div class="kt-widget__subhead">
+                                                    <a href="#"><i class="flaticon2-calendar-7"></i>[[${'Groupe créé le ' + #temporals.format(group.creationDate, 'dd MMMM yyyy')}]]</a>
+                                                </div>
+                                                <div class="kt-widget__info">
+                                                    <div class="kt-widget__desc" th:text="${group.description}"></div>
+                                                    <div class="kt-widget__progress">
+                                                        <div class="kt-widget__text">
+                                                            Exhaustivité
+                                                        </div>
+                                                        <div class="progress" style="height: 5px;width: 100%;">
+                                                            <div class="progress-bar"
+                                                                 th:classappend="${group.completeness > 0.85} ? 'kt-bg-success' : (${group.completeness > 0.55} ? 'kt-bg-warning' : 'kt-bg-danger')"
+                                                                 role="progressbar"
+                                                                 th:style="|width: ${group.completenessPercentage}|"
+                                                                 th:attr="aria-valuenow=${group.completeness}"
+                                                                 aria-valuemin="0"
+                                                                 aria-valuemax="100"></div>
+                                                        </div>
+                                                        <div class="kt-widget__stats" th:text="${group.completenessPercentage}">
+                                                            0%
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="kt-widget__bottom">
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-users"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <span class="kt-widget__title">Nombre de membres</span>
+                                                    <span class="kt-widget__value" th:text="${group.memberCount + ' membres'}">0 membres</span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-medal"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <span class="kt-widget__title">Qualité modération</span>
+                                                    <span class="kt-widget__value">Excellente</span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-pie-chart"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <span class="kt-widget__title">Bord politique</span>
+                                                    <span class="kt-widget__value">Lawful Neutral</span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-file-2"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <span class="kt-widget__title" th:text="${group.contributionCount + ' Contributions'}">0 Contributions</span>
+                                                    <a href="#" class="kt-widget__value kt-font-brand">Voir les contributions</a>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-chat-1"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <span class="kt-widget__title" th:text="${group.opinionCount + ' Avis'}">0 Avis</span>
+                                                    <a href="#" class="kt-widget__value kt-font-brand">Voir les avis</a>
+                                                </div>
+                                            </div>
+                                            <div class="kt-widget__item">
+                                                <div class="kt-widget__icon">
+                                                    <i class="flaticon-network"></i>
+                                                </div>
+                                                <div class="kt-widget__details">
+                                                    <div class="kt-section__content kt-section__content--solid">
+                                                        <div class="kt-badge kt-badge__pics">
+                                                            <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="John Myer">
+                                                                <img src="./assets/media/users/100_7.jpg" alt="image">
+                                                            </a>
+                                                            <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Alison Brandy">
+                                                                <img src="./assets/media/users/100_3.jpg" alt="image">
+                                                            </a>
+                                                            <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Selina Cranson">
+                                                                <img src="./assets/media/users/100_2.jpg" alt="image">
+                                                            </a>
+                                                            <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Luke Walls">
+                                                                <img src="./assets/media/users/100_13.jpg" alt="image">
+                                                            </a>
+                                                            <a href="#" class="kt-badge__pic" data-toggle="kt-tooltip" data-skin="brand" data-placement="top" title="" data-original-title="Micheal York">
+                                                                <img src="./assets/media/users/100_4.jpg" alt="image">
+                                                            </a>
+                                                            <a href="#" class="kt-badge__pic kt-badge__pic--last kt-font-brand">
+                                                                +7
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end:: Widgets/Applications/User/Profile3-->
+
+                            <!--Begin::Section-->
+                            <div class="row">
+                                <div class="col-xl-12">
+
+                                    <!--begin:: Components/Pagination/Default-->
+                                    <div class="kt-portlet" th:if="${page.totalPages > 1}" th:fragment="pagination(name)" >
+                                        <div class="kt-portlet__body">
+
+                                            <!--begin: Pagination-->
+                                            <div class="kt-pagination kt-pagination--brand" th:with="request=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+                                                <ul class="kt-pagination__links">
+                                                    <li class="kt-pagination__link--first" th:unless="${page.isFirst()}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', 1).toUriString()}}"><i class="fa fa-angle-double-left kt-font-brand"></i></a>
+                                                    </li>
+                                                    <li class="kt-pagination__link--prev" th:if="${page.hasPrevious()}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', page.previousPageable().pageNumber + 1).toUriString()}}"><i class="fa fa-angle-left kt-font-brand"></i></a>
+                                                    </li>
+                                                    <li th:if="${page.number > 3}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', page.number - 3).toUriString()}}">...</a>
+                                                    </li>
+                                                    <th:block th:each="index : ${#numbers.sequence((page.number > 3 ? page.number - 2 : 1), (page.totalPages - page.number > 4 ? page.number + 4 : page.totalPages))}">
+                                                        <li th:class="${page.number + 1 == index ? 'kt-pagination__link--active' : ''}">
+                                                            <a th:href="@{${request.replaceQueryParam('page', index).toUriString()}}" th:text="${index}"></a>
+                                                        </li>
+                                                    </th:block>
+                                                    <li th:if="${page.totalPages - page.number > 4}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', page.number + 5).toUriString()}}">...</a>
+                                                    </li>
+                                                    <li class="kt-pagination__link--next" th:if="${page.hasNext()}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', page.nextPageable().pageNumber + 1).toUriString()}}"><i class="fa fa-angle-right kt-font-brand"></i></a>
+                                                    </li>
+                                                    <li class="kt-pagination__link--last" th:unless="${page.isLast()}">
+                                                        <a th:href="@{${request.replaceQueryParam('page', page.totalPages).toUriString()}}"><i class="fa fa-angle-double-right kt-font-brand"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="kt-pagination__toolbar">
+                                                    <script th:inline="javascript">
+                                                        function changePageSize(size) {
+                                                            const requestURI = new URL(window.location.href);
+                                                            requestURI.searchParams.set("size", size);
+                                                            requestURI.searchParams.delete("page");
+                                                            window.location = requestURI.toString();
+                                                        }
+                                                    </script>
+                                                    <select th:field="*{page.size}" onchange="changePageSize(this.value)" class="form-control kt-font-brand" style="width: 60px">
+                                                        <option th:value="10" th:text="10"></option>
+                                                        <option th:value="20" th:text="20"></option>
+                                                        <option th:value="30" th:text="30"></option>
+                                                        <option th:value="50" th:text="50"></option>
+                                                        <option th:value="100" th:text="100"></option>
+                                                    </select>
+                                                    <span class="pagination__desc" th:text="${'Affichage de ' + page.numberOfElements + ' ' + name + ' sur ' + page.totalElements}">
+                                                        Affichage de 0 groupes sur 0
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!--end: Pagination-->
+                                        </div>
+                                    </div>
+
+                                    <!--end:: Components/Pagination/Default-->
+                                </div>
+                            </div>
+
+                            <!--End::Section-->
+                        </div>
+
+                        <!-- end:: Content -->
+                    </div>
+
+                    <th:block th:fragment="footer">
+                    <!-- begin:: Footer -->
+                    <div th:fragment="footer" class="kt-footer kt-grid__item kt-grid kt-grid--desktop kt-grid--ver-desktop" id="kt_footer">
+                        <div class="kt-footer__copyright">
+                            2020&nbsp;&copy;&nbsp;<a href="https://www.facebook.com/groups/604296976647261"
+                                                     target="_blank" class="kt-link">NeurchiAdvisor</a>
+                        </div>
+                        <div class="kt-footer__menu">
+                            <a href="https://www.facebook.com/groups/604296976647261" target="_blank"
+                               class="kt-footer__menu-link kt-link">A propos</a>
+                        </div>
+                    </div>
+
+                    <!-- end:: Footer -->
+                    </th:block>
+                </div>
+            </div>
+        </div>
+
+        <!-- end:: Page -->
+
+        <th:block th:fragment="scrolltop">
+        <!-- begin::Scrolltop -->
+        <div id="kt_scrolltop" class="kt-scrolltop">
+            <i class="fa fa-arrow-up"></i>
+        </div>
+        </th:block>
+
+        <!-- end::Scrolltop -->
+
+        <th:block th:fragment="scripts">
+        <!-- begin::Global Config(global config for global JS scripts) -->
+        <script>
+            var KTAppOptions = {
+                "colors": {
+                    "state": {
+                        "brand": "#5d78ff",
+                        "dark": "#282a3c",
+                        "light": "#ffffff",
+                        "primary": "#5867dd",
+                        "success": "#34bfa3",
+                        "info": "#36a3f7",
+                        "warning": "#ffb822",
+                        "danger": "#fd3995"
+                    },
+                    "base": {
+                        "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+                        "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+                    }
+                }
+            };
+        </script>
+
+        <!-- end::Global Config -->
+
+        <!--begin:: Global Mandatory Vendors -->
+        <script type="text/javascript" th:src="@{/webjars/jquery/3.3.1/dist/jquery.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/popper.js/1.15.0/dist/umd/popper.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/dist/js/bootstrap.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/js-cookie/2.2.0/src/js.cookie.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/moment/2.24.0/min/moment.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/tooltip.js/1.3.2/dist/umd/tooltip.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/perfect-scrollbar/1.4.0/dist/perfect-scrollbar.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/sticky-js/1.2.0/dist/sticky.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/wnumb/1.1.0/wNumb.js}"></script>
+
+        <!--end:: Global Mandatory Vendors -->
+
+        <!--begin:: Global Optional Vendors -->
+        <script type="text/javascript" th:src="@{/webjars/jquery-form/4.2.2/dist/jquery.form.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery-blockui/2.70/jquery.blockUI.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-datepicker/1.8.0/dist/js/bootstrap-datepicker.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/bootstrap-datepicker.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-datetime-picker/2.4.4/js/bootstrap-datetimepicker.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-timepicker/0.5.2/js/bootstrap-timepicker.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/bootstrap-timepicker.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-daterangepicker/3.0.3/daterangepicker.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-touchspin/4.2.5/dist/jquery.bootstrap-touchspin.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-maxlength/1.6.0/bootstrap-maxlength.js}"></script>
+        <script type="text/javascript" src="./assets/vendors/custom/vendors/bootstrap-multiselectsplitter/bootstrap-multiselectsplitter.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-select/1.13.9/dist/js/bootstrap-select.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-switch/3.3.4/dist/js/bootstrap-switch.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/bootstrap-switch.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/select2/4.0.6/dist/js/select2.full.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/ion-rangeslider/2.3.0/js/ion.rangeSlider.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/typeahead.js/0.11.1/dist/typeahead.bundle.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/handlebars/4.1.1/dist/handlebars.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/inputmask/4.0.6/dist/jquery.inputmask.bundle.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/inputmask/4.0.6/dist/inputmask/inputmask.date.extensions.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/inputmask/4.0.6/dist/inputmask/inputmask.numeric.extensions.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/nouislider/13.1.5/distribute/nouislider.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/owl.carousel/2.3.4/dist/owl.carousel.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/autosize/4.0.2/dist/autosize.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/clipboard/2.0.4/dist/clipboard.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/dropzone/5.5.0/dropzone.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/summernote/0.8.11/dist/summernote.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/markdown/0.5.0/lib/markdown.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-markdown/2.10.0/js/bootstrap-markdown.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/bootstrap-markdown.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/bootstrap-notify/3.1.3/bootstrap-notify.min.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/bootstrap-notify.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery-validation/1.19.0/dist/jquery.validate.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery-validation/1.19.0/dist/additional-methods.js}"></script>
+        <script type="text/javascript" th:src="@{/assets/vendors/custom/js/vendors/jquery-validation.init.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/toastr/2.1.4/build/toastr.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/raphael/2.2.8/raphael.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/morris.js/0.5.0/morris.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/chart.js/2.8.0/dist/Chart.bundle.js}"></script>
+        <script type="text/javascript" src="./assets/vendors/custom/vendors/bootstrap-session-timeout/dist/bootstrap-session-timeout.min.js"></script>
+        <script type="text/javascript" src="./assets/vendors/custom/vendors/jquery-idletimer/idle-timer.min.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/waypoints/4.0.1/lib/jquery.waypoints.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/counterup/1.0.2/jquery.counterup.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/es6-promise-polyfill/1.2.0/promise.min.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/sweetalert2/8.8.7/dist/sweetalert2.min.js}"></script>
+        <script type="text/javascript" src="./assets/vendors/custom/js/vendors/sweetalert2.init.js"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery.repeater/1.2.1/src/lib.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery.repeater/1.2.1/src/jquery.input.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/jquery.repeater/1.2.1/src/repeater.js}"></script>
+        <script type="text/javascript" th:src="@{/webjars/dompurify/1.0.10/dist/purify.js}"></script>
+
+        <!--end:: Global Optional Vendors -->
+
+        <!--begin::Global Theme Bundle(used by all pages) -->
+        <script src="./assets/js/scripts.bundle.js" type="text/javascript"></script>
+
+        <!--end::Global Theme Bundle -->
+        </th:block>
+    </body>
+
+<!-- end::Body -->
+</html>
