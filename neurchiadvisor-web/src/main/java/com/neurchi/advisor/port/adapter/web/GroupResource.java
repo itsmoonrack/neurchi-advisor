@@ -2,7 +2,6 @@ package com.neurchi.advisor.port.adapter.web;
 
 import com.neurchi.advisor.application.data.GroupOfUserData;
 import com.neurchi.advisor.common.port.adapter.facebook.UserGroup;
-import com.neurchi.advisor.domain.model.GroupSubscription;
 import com.restfb.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,7 @@ public final class GroupResource {
 //            Connection<UserPermission> permissions = facebookClient.fetchConnection("me/permissions", UserPermission.class);
             Connection<UserGroup> groupConnection = facebookClient.fetchConnection("me/groups", UserGroup.class,
                     Parameter.with("limit", 1000),
-//                    Parameter.with("admin_only", true),
+                    Parameter.with("admin_only", true),
                     Parameter.with("fields", "id, name, description, member_count, administrator, privacy, cover, icon"));
 
             final GroupsOfUserMetaData groupsOfUserMetaData = new GroupsOfUserMetaData();
@@ -74,7 +73,7 @@ public final class GroupResource {
                         groupOfUserData.setName(group.getName());
                         groupOfUserData.setDescription(textOverflowEllipsis(group.getDescription(), 150));
                         groupOfUserData.setCover(group.getCover() != null ? group.getCover().getSource() : group.getIcon());
-                        groupOfUserData.setStatus(GroupSubscription.values()[rand.getAndIncrement() % 4].name());
+                        groupOfUserData.setStatus("Pending");
                         return groupOfUserData; })
                     .sorted(comparing(field, direction))
                     .skip((page - 1) * limit)

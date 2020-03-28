@@ -1,4 +1,4 @@
-package com.neurchi.advisor.domain.model;
+package com.neurchi.advisor.group.domain.model.group;
 
 public enum GroupSubscription {
     Subscribed,

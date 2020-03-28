@@ -11,5 +11,11 @@
 
     <artifactId>neurchiadvisor-group</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.neurchiadvisor</groupId>
+            <artifactId>neurchiadvisor-common</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
