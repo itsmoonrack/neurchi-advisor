@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all">
+    <class name="com.neurchi.advisor.common.domain.model.process.TestableTimeConstrainedProcess" table="testable_time_constrained_process" lazy="true">
+        <id name="id" type="long" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version" type="int"/>
+        <property name="allowableDuration" column="allowable_duration" type="long"/>
+        <property name="confirm1" column="confirm1" type="boolean"/>
+        <property name="confirm2" column="confirm2" type="boolean"/>
+        <property name="description" column="description" type="java.lang.String"/>
+        <component name="processId">
+            <property name="id" column="process_id_id" type="java.lang.String"/>
+        </component>
+        <property name="processCompletionType" column="process_completion_type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.neurchi.advisor.common.domain.model.process.Process$ProcessCompletionType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+        <property name="startTime" column="start_time" type="java.time.Instant"/>
+        <property name="tenantId" column="tenant_id" type="java.lang.String"/>
+        <property name="timedOutDate" column="timed_out_date" type="java.time.Instant"/>
+        <property name="totalRetriesPermitted" column="total_retries_permitted" type="int"/>
+    </class>
+</hibernate-mapping>

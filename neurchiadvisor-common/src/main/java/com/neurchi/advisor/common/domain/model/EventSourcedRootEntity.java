@@ -31,6 +31,7 @@ public abstract class EventSourcedRootEntity extends AssertionConcern {
     }
 
     protected EventSourcedRootEntity(final Stream<DomainEvent> eventStream, final int streamVersion) {
+        this();
         eventStream.forEach(this::mutateWhen);
         this.setUnmutatedVersion(streamVersion);
     }

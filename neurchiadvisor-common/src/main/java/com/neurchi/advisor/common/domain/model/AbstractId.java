@@ -33,7 +33,11 @@ public abstract class AbstractId extends AssertionConcern implements Identity, S
     }
 
     protected AbstractId(final String id) {
+        this.setId(id);
+    }
 
+    protected AbstractId() {
+        super();
     }
 
     protected void validateId(final String id) {
