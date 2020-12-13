@@ -37,8 +37,8 @@ public class RabbitMQGroupSubscriptionRequestedListener extends ExchangeListener
             return;
         }
 
-        final String tenantId = reader.eventTextValue("tenantId.id");
-        final String groupId = reader.eventTextValue("group.id");
+        final String tenantId = reader.eventStringValue("tenantId.id");
+        final String groupId = reader.eventStringValue("group.id");
 
         this.groupApplicationService
                 .startSubscriptionInitiation(
@@ -89,17 +89,27 @@ public class RabbitMQGroupSubscriptionRequestedListener extends ExchangeListener
 
         properties.put("command", COMMAND);
 
-        properties.put("tenantId", reader.eventTextValue("tenantId.id"));
+        properties.put("tenantId", reader.eventStringValue("tenantId.id"));
 
         final GroupSubscriptionExclusiveOwnerId exclusiveOwnerId =
                 new GroupSubscriptionExclusiveOwnerId(
-                        reader.eventTextValue("groupId.id"));
+                        reader.eventStringValue("groupId.id"));
 
         properties.put("exclusiveOwnerId", exclusiveOwnerId.encoded());
 
-        properties.put("creatorId", ""); // TODO
+        final String groupOwnerId = reader.eventStringValue("groupOwnerId.id");
 
-        properties.put("administratorId", ""); // TODO
+        properties.put("subscriberId", groupOwnerId);
+
+        properties.put("groupName", reader.eventStringValue("name"));
+
+        properties.put("groupDescription", reader.eventStringValue("description"));
+
+        properties.put("groupCreatedOn", reader.eventStringValue("createdOn"));
+
+        properties.put("groupCoverPhoto", reader.eventStringValue("cover"));
+
+        properties.put("groupMemberCount", reader.eventStringValue("memberCount"));
 
         return properties;
     }

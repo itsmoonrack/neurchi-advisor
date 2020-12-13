@@ -26,14 +26,14 @@ public class RabbitMQGroupSubscriptionStartedListener extends ExchangeListener {
     protected void filteredDispatch(final String type, final String textMessage) {
         final NotificationReader reader = new NotificationReader(textMessage);
 
-        final String ownerId = reader.eventTextValue("exclusiveOwner");
+        final String ownerId = reader.eventStringValue("exclusiveOwner");
 
         GroupSubscriptionExclusiveOwnerId
                 .fromEncodedId(ownerId)
                 .ifPresent(exclusiveOwnerId -> {
 
-                    final String tenantId = reader.eventTextValue("tenant.id");
-                    final String subscriptionId = reader.eventTextValue("subscriptionId.id");
+                    final String tenantId = reader.eventStringValue("tenant.id");
+                    final String subscriptionId = reader.eventStringValue("subscriptionId.id");
 
                     this.groupApplicationService()
                             .initiateSubscription(

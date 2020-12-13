@@ -3,7 +3,6 @@ package com.neurchi.advisor.common.port.adapter.persistence.hibernate;
 import com.neurchi.advisor.common.domain.model.process.ProcessId;
 import com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTracker;
 import com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTrackerRepository;
-import com.neurchi.advisor.common.persistence.PersistenceManagerProvider;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
@@ -15,23 +14,13 @@ public class HibernateTimeConstrainedProcessTrackerRepository
         extends AbstractHibernateSession
         implements TimeConstrainedProcessTrackerRepository {
 
-    HibernateTimeConstrainedProcessTrackerRepository() {
-        super();
-    }
-
-    HibernateTimeConstrainedProcessTrackerRepository(
-            final PersistenceManagerProvider persistenceManagerProvider) {
-
-        if (!persistenceManagerProvider.hasHibernateSession()) {
-            throw new IllegalArgumentException("The PersistenceManagerProvider must have a Hibernate Session.");
-        }
-
-        this.setSession(persistenceManagerProvider.hibernateSession());
-    }
-
     @Override
     public void add(final TimeConstrainedProcessTracker timeConstrainedProcessTracker) {
-        this.save(timeConstrainedProcessTracker);
+        try {
+            this.session().save(timeConstrainedProcessTracker);
+        } catch (ConstraintViolationException e) {
+            throw new IllegalStateException("Either TimeConstrainedProcessTracker is not unique or another constraint has been violated.", e);
+        }
     }
 
     @Override
@@ -76,15 +65,6 @@ public class HibernateTimeConstrainedProcessTrackerRepository
         query.setParameter(1, tenantId);
 
         return query.stream();
-    }
-
-    @Override
-    public void save(final TimeConstrainedProcessTracker timeConstrainedProcessTracker) {
-        try {
-            this.session().saveOrUpdate(timeConstrainedProcessTracker);
-        } catch (ConstraintViolationException e) {
-            throw new IllegalStateException("Either TimeConstrainedProcessTracker is not unique or another constraint has been violated.", e);
-        }
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.neurchi.advisor.advisory.port.adapter.web;
 
 import com.neurchi.advisor.advisory.application.data.GroupOfUserData;
+import com.neurchi.advisor.advisory.application.group.GroupApplicationService;
+import com.neurchi.advisor.advisory.application.group.NewGroupCommand;
 import com.neurchi.advisor.common.port.adapter.service.facebook.types.UserGroup;
-import com.neurchi.advisor.subscription.application.command.SubscribeToGroupCommand;
-import com.neurchi.advisor.subscription.application.group.GroupApplicationService;
 import com.restfb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,9 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +24,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.restfb.Version.VERSION_7_0;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.StreamSupport.stream;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
@@ -50,11 +54,9 @@ public final class MeResource {
             @RequestBody final List<String> groupIds,
             final Principal principal) {
 
-
-        if (principal instanceof OAuth2Authentication) {
-            final OAuth2Authentication authentication = (OAuth2Authentication) principal;
+        if (principal instanceof OAuth2Authentication authentication) {
             final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
-            final FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, Version.VERSION_6_0);
+            final FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, VERSION_7_0);
             final Connection<UserGroup> groupConnection = facebookClient.fetchConnection("me/groups", UserGroup.class,
                     Parameter.with("limit", 1000),
                     Parameter.with("fields", "id, name, description, created_time, member_count, administrator, privacy, cover, icon"));
@@ -63,31 +65,23 @@ public final class MeResource {
 
             final FacebookClient.AccessToken accessToken = facebookClient.obtainExtendedAccessToken(this.appId, this.appSecret, details.getTokenValue());
 
-            groupIds.stream().filter(groupsById::containsKey).map(groupsById::get).forEach(userGroup -> {
+            final LocalDateTime expiresIn = LocalDateTime.ofInstant(accessToken.getExpires().toInstant(), ZoneId.systemDefault());
 
-                this.logger.info("Group: {}", userGroup);
-
-                    final SubscribeToGroupCommand command = new SubscribeToGroupCommand();
-                    command.setTenantId("Neurchi");
-                    command.setName(userGroup.getName());
-                    command.setCreatedOn(userGroup.getCreatedTime().toInstant());
-                    command.setGroupId(userGroup.getId());
-                    command.setDescription(userGroup.getDescription());
-                    command.setAdministrator(userGroup.isAdministrator());
-                    command.setMemberCount(userGroup.getMemberCount());
-                    command.setIdentity(principal.getName());
-
-                    if (userGroup.getCover() != null) {
-                        command.setCoverId(userGroup.getCover().getId());
-                        command.setOffsetX(userGroup.getCover().getOffsetX());
-                        command.setOffsetY(userGroup.getCover().getOffsetY());
-                        command.setCoverSource(userGroup.getCover().getSource());
-                    }
-
-                    this.groupApplicationService
-                            .subscribeToGroup(command);
-
-            });
+            groupIds.stream()
+                    .filter(groupsById::containsKey)
+                    .map(groupsById::get)
+                    .forEach(userGroup ->
+                        this.groupApplicationService
+                                .newGroupWithSubscription(
+                                        new NewGroupCommand(
+                                                "Neurchi",
+                                                userGroup.getId(),
+                                                principal.getName(),
+                                                userGroup.getName(),
+                                                userGroup.getDescription(),
+                                                userGroup.getMemberCount(),
+                                                userGroup.getCreatedTime().toInstant().atZone(ZoneOffset.UTC.normalized()).toLocalDateTime(),
+                                                userGroup.getCover() != null ? userGroup.getCover().getSource() : null)));
 
             return ResponseEntity.noContent().build();
         }
@@ -96,7 +90,8 @@ public final class MeResource {
     }
 
     @RequestMapping(method = POST, path = "groups", consumes = APPLICATION_FORM_URLENCODED_VALUE, produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<GroupsOfUserData> availableGroupsOfCurrentUser(
+    public @ResponseBody
+    ResponseEntity<GroupsOfUserData> availableGroupsOfCurrentUser(
             @RequestParam(required = false, name = "pagination[page]", defaultValue = "1") final int page,
             @RequestParam(required = false, name = "pagination[pages]", defaultValue = "1") final int pages,
             @RequestParam(required = false, name = "pagination[perpage]", defaultValue = "10") final int limit,
@@ -123,6 +118,7 @@ public final class MeResource {
 //            final AtomicInteger rand = new AtomicInteger(0);
 
 
+            // SJW: zucked: 1491402944259898
 //            UserGroup memeMaghrebin = facebookClient.fetchObject("715121222212324", UserGroup.class, Parameter.with("fields", "id, name, description, member_count, privacy, cover, icon"));
 //            UserGroup finance = facebookClient.fetchObject("298448690577160", UserGroup.class, Parameter.with("fields", "id, name, description, member_count, privacy, cover, icon"));
 //            try {
@@ -145,7 +141,8 @@ public final class MeResource {
                         groupOfUserData.setDescription(textOverflowEllipsis(group.getDescription(), 100));
                         groupOfUserData.setPicture(group.getPicture().getUrl());
                         groupOfUserData.setStatus("Pending");
-                        return groupOfUserData; })
+                        return groupOfUserData;
+                    })
                     .collect(Collectors.toList()));
 
             return ResponseEntity.ok(groupsOfUserData);
@@ -236,7 +233,6 @@ public final class MeResource {
             this.total = total;
         }
     }
-
 
 
 }

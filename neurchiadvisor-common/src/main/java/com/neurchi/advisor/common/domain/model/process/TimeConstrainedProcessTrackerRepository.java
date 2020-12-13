@@ -13,7 +13,5 @@ public interface TimeConstrainedProcessTrackerRepository {
 
     Stream<TimeConstrainedProcessTracker> allTrackers(String tenantId);
 
-    void save(TimeConstrainedProcessTracker timeConstrainedProcessTracker);
-
     Optional<TimeConstrainedProcessTracker> trackerOfProcessId(String tenantId, ProcessId processId);
 }

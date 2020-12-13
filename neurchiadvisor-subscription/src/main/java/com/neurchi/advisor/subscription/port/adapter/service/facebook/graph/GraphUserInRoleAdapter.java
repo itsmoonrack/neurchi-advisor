@@ -22,7 +22,7 @@ import java.util.List;
 public class GraphUserInRoleAdapter implements UserInRoleAdapter {
 
     @Value("${security.oauth2.client.client-secret}")
-    private String appSecret;
+    private String appSecret; // TODO: Move this away
 
     @Override
     public <T extends Collaborator> T toCollaborator(
@@ -40,7 +40,7 @@ public class GraphUserInRoleAdapter implements UserInRoleAdapter {
             if (context.getAuthentication() instanceof OAuth2Authentication authentication) {
                 if (authentication.getDetails() instanceof OAuth2AuthenticationDetails details) {
 
-                    final FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, Version.VERSION_7_0);
+                    final FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, Version.VERSION_9_0);
 
                     final BatchRequest userRequest = new BatchRequest.BatchRequestBuilder("me")
                             .parameters(Parameter.with("fields", "picture.width(40).height(40),name"))

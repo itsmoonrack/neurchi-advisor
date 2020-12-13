@@ -1,6 +1,6 @@
 USE neurchiadvisor_group;
 
-CREATE TABLE `event_store` (
+CREATE TABLE `table_event_store` (
     `event_id`       bigint       NOT NULL auto_increment,
     `event_body`     TEXT         NOT NULL,
     `event_type`     varchar(250) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `event_store` (
     PRIMARY KEY (`event_id`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `stored_event` (
+CREATE TABLE `table_stored_event` (
     `event_id` bigint NOT NULL auto_increment,
     `event_body` TEXT NOT NULL,
     `occurred_on` timestamp NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE `stored_event` (
     PRIMARY KEY (`event_id`)
 ) ENGINE=InnoDB;
 
-CREATE TABLE `time_constrained_process_tracker` (
+CREATE TABLE `table_time_constrained_process_tracker` (
     `time_constrained_process_tracker_id` bigint NOT NULL auto_increment,
     `allowable_duration` bigint NOT NULL,
     `completed` tinyint NOT NULL,

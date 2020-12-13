@@ -55,7 +55,7 @@ public abstract class EventSourcedRootEntity extends AssertionConcern {
 
         final String key = rootType.getName() + ":" + eventType.getName();
 
-        final Method mutatorMethod = mutatorMethods.computeIfAbsent(key, k -> this.mutatorMethodFor(k, rootType, eventType));
+        final Method mutatorMethod = mutatorMethods.computeIfAbsent(key, k -> this.mutatorMethodFor(rootType, eventType));
 
         try {
             mutatorMethod.invoke(this, domainEvent);
@@ -70,7 +70,7 @@ public abstract class EventSourcedRootEntity extends AssertionConcern {
         }
     }
 
-    private Method mutatorMethodFor(final String key, final Class<? extends EventSourcedRootEntity> rootType, final Class<? extends DomainEvent> eventType) {
+    private Method mutatorMethodFor(final Class<? extends EventSourcedRootEntity> rootType, final Class<? extends DomainEvent> eventType) {
         try {
             final Method method = this.hiddenOrPublicMethod(rootType, eventType);
             method.setAccessible(true);

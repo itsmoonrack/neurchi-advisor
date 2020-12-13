@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="notificationPublisher" class="com.neurchi.advisor.identityaccess.application.MockNotificationPublisher"/>
+
+    <bean id="groupMemberService" class="com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberService"/>
+
+    <bean id="eventStore" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.InMemoryEventStore"/>
+
+    <bean id="groupRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.InMemoryGroupRepository"/>
+
+    <bean id="roleRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.InMemoryRoleRepository"/>
+
+    <bean id="tenantProvisioningService" class="com.neurchi.advisor.identityaccess.domain.model.identity.TenantProvisioningService"/>
+
+    <bean id="tenantRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.InMemoryTenantRepository"/>
+
+    <bean id="userRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.InMemoryUserRepository"/>
+
+</beans>

@@ -15,18 +15,29 @@ public class NotificationReader extends AbstractJSONMediaReader {
         this.setEvent(this.representation().get("event"));
     }
 
-    public String eventTextValue(final String... keys) {
-        return this.textValue(this.event(), keys);
+    public NotificationReader(final JsonNode representationNode) {
+        super(representationNode);
+
+        this.setEvent(this.representation().get("event"));
+    }
+
+    public String eventStringValue(final String... keys) {
+        return this.stringValue(this.event(), keys);
     }
 
     public Integer eventIntegerValue(final String... keys) {
-        String textValue = this.textValue(this.event(), keys);
-        return textValue == null ? null : Integer.parseInt(textValue);
+        String stringValue = this.stringValue(this.event(), keys);
+        return stringValue == null ? null : Integer.parseInt(stringValue);
     }
 
     public Boolean eventBooleanValue(final String... keys) {
-        String textValue = this.textValue(this.event(), keys);
-        return textValue == null ? null : Boolean.parseBoolean(textValue);
+        String stringValue = this.stringValue(this.event(), keys);
+        return stringValue == null ? null : Boolean.parseBoolean(stringValue);
+    }
+
+    public Instant eventInstantValue(final String... keys) {
+        String stringValue = this.stringValue(this.event(), keys);
+        return stringValue == null ? null : Instant.parse(stringValue);
     }
 
     public long notificationId() {
@@ -34,7 +45,7 @@ public class NotificationReader extends AbstractJSONMediaReader {
     }
 
     public String notificationIdAsString() {
-        return this.textValue("notificationId");
+        return this.stringValue("notificationId");
     }
 
     public Instant occurredOn() {
@@ -42,7 +53,11 @@ public class NotificationReader extends AbstractJSONMediaReader {
     }
 
     public String typeName() {
-        return this.textValue("typeName");
+        return this.stringValue("typeName");
+    }
+
+    public int version() {
+        return this.integerValue("version");
     }
 
     private JsonNode event() {

@@ -14,7 +14,7 @@ import static com.neurchi.advisor.common.port.adapter.messaging.Exchanges.*;
 
 public abstract class EventTrackingTest {
 
-    protected TestGroupRabbitMQExchangeListener groupRabbitMQExchangeListener;
+    protected TestAdvisoryRabbitMQExchangeListener advisoryRabbitMQExchangeListener;
     protected TestSubscriptionRabbitMQExchangeListener subscriptionRabbitMQExchangeListener;
     protected TestIdentityAccessRabbitMQExchangeListener identityAccessRabbitMQExchangeListener;
 
@@ -27,8 +27,7 @@ public abstract class EventTrackingTest {
 
     protected void expectedEvent(final Class<? extends DomainEvent> domainEventType, final int total) {
         final long count = this.handledEvents.stream()
-                .map(Object::getClass)
-                .filter(domainEventType::isInstance)
+                .filter(domainEventType::equals)
                 .count();
 
         if (count != total) {
@@ -58,7 +57,7 @@ public abstract class EventTrackingTest {
         final String notificationTypeName = notificationType.getName();
 
         final long count = this.handledNotifications.values().stream()
-                .filter(type -> type.equals(notificationTypeName))
+                .filter(notificationTypeName::equals)
                 .count();
 
         if (count != total) {
@@ -82,7 +81,7 @@ public abstract class EventTrackingTest {
     }
 
     @BeforeEach
-    void setUp() throws Exception {
+    protected void setUp() throws Exception {
         DomainEventPublisher.instance().reset();
 
         DomainEventPublisher.instance().subscribe(new DomainEventSubscriber<DomainEvent>() {
@@ -100,7 +99,7 @@ public abstract class EventTrackingTest {
         this.handledEvents = new ArrayList<>();
         this.handledNotifications = new HashMap<>();
 
-        this.groupRabbitMQExchangeListener = new TestGroupRabbitMQExchangeListener();
+        this.advisoryRabbitMQExchangeListener = new TestAdvisoryRabbitMQExchangeListener();
         this.subscriptionRabbitMQExchangeListener = new TestSubscriptionRabbitMQExchangeListener();
         this.identityAccessRabbitMQExchangeListener = new TestIdentityAccessRabbitMQExchangeListener();
 
@@ -117,14 +116,14 @@ public abstract class EventTrackingTest {
         // nothing with them as a work-around.
         Thread.sleep(500L);
 
-        this.groupRabbitMQExchangeListener.clear();
+        this.advisoryRabbitMQExchangeListener.clear();
         this.subscriptionRabbitMQExchangeListener.clear();
         this.identityAccessRabbitMQExchangeListener.clear();
     }
 
     @AfterEach
     protected void tearDown() throws Exception {
-        this.groupRabbitMQExchangeListener.close();
+        this.advisoryRabbitMQExchangeListener.close();
         this.subscriptionRabbitMQExchangeListener.close();
         this.identityAccessRabbitMQExchangeListener.close();
     }
@@ -150,7 +149,7 @@ public abstract class EventTrackingTest {
         }
     }
 
-    protected class TestGroupRabbitMQExchangeListener extends TestExchangeListener {
+    protected class TestAdvisoryRabbitMQExchangeListener extends TestExchangeListener {
         @Override
         protected String exchangeName() {
             return AdvisoryExchangeName;

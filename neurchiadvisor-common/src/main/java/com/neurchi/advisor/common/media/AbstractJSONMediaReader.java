@@ -2,6 +2,7 @@ package com.neurchi.advisor.common.media;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.NullNode;
 import com.neurchi.advisor.common.serializer.AbstractSerializer;
 
@@ -21,20 +22,37 @@ public abstract class AbstractJSONMediaReader {
         this.setRepresentation(representationObject);
     }
 
+    public ArrayNode array(final String... keys) {
+        JsonNode node = this.navigateTo(this.representation(), keys);
+        return node instanceof ArrayNode ? (ArrayNode) node : null;
+    }
+
+    public Boolean booleanValue(final String... keys) {
+        String textValue = this.stringValue(keys);
+
+        return textValue == null ? null : Boolean.parseBoolean(textValue);
+    }
+
     public Instant instantValue(final String... keys) {
-        String textValue = this.textValue(keys);
+        String textValue = this.stringValue(keys);
 
         return textValue == null ? null : Instant.parse(textValue);
     }
 
+    public Integer integerValue(final String... keys) {
+        String textValue = this.stringValue(keys);
+
+        return textValue == null ? null : Integer.valueOf(textValue);
+    }
+
     public Long longValue(final String... keys) {
-        String textValue = this.textValue(keys);
+        String textValue = this.stringValue(keys);
 
         return textValue == null ? null : Long.valueOf(textValue);
     }
 
-    public String textValue(final String... keys) {
-        return this.textValue(this.representation(), keys);
+    public String stringValue(final String... keys) {
+        return this.stringValue(this.representation(), keys);
     }
 
     protected JsonNode navigateTo(final JsonNode node, String... keys) {
@@ -68,9 +86,9 @@ public abstract class AbstractJSONMediaReader {
         return this.representation;
     }
 
-    protected String textValue(final JsonNode startingJsonNode, final String... keys) {
-        String textValue = this.navigateTo(startingJsonNode, keys).asText();
-        return textValue.length() == 0 || textValue.equals(NullNode.instance.asText()) ? null : textValue;
+    protected String stringValue(final JsonNode startingJsonNode, final String... keys) {
+        String stringValue = this.navigateTo(startingJsonNode, keys).asText();
+        return stringValue.length() == 0 || stringValue.equals(NullNode.instance.asText()) ? null : stringValue;
     }
 
     private void setRepresentation(final JsonNode representation) {

@@ -17,7 +17,7 @@ public final class DomainEventPublisher {
         return instance.get();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     public <T> void publish(final T domainEvent) {
         if (!this.isPublishing() && this.hasSubscribers()) {
 
@@ -29,10 +29,7 @@ public final class DomainEventPublisher {
                 Stream<DomainEventSubscriber<T>> allSubscribers = this.subscribers();
 
                 allSubscribers
-                        .filter(subscriber -> {
-                            Class subscribedToType = subscriber.subscribedToType();
-                            return subscribedToType.isAssignableFrom(eventType);
-                        })
+                        .filter(subscriber -> subscriber.subscribedToType().isAssignableFrom(eventType))
                         .forEach(subscriber -> subscriber.handleEvent(domainEvent));
 
             } finally {

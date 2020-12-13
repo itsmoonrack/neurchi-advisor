@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all" package="com.neurchi.advisor.identityaccess.domain.model.access">
+    <class name="Role" table="table_role" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="description" column="description"/>
+        <many-to-one name="group" class="com.neurchi.advisor.identityaccess.domain.model.identity.Group" column="group_id"/>
+        <property name="name" column="name"/>
+        <property name="supportsNesting" column="supports_nesting"/>
+        <component name="tenantId" class="com.neurchi.advisor.identityaccess.domain.model.identity.TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+    </class>
+</hibernate-mapping>

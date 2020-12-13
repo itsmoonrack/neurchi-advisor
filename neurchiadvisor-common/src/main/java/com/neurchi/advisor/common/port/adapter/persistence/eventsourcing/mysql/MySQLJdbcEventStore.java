@@ -54,7 +54,7 @@ public final class MySQLJdbcEventStore implements EventStore {
             PreparedStatement statement =
                     connection
                             .prepareStatement(
-                                    "INSERT INTO event_store VALUES(?, ?, ?, ?, ?)");
+                                    "INSERT INTO table_event_store VALUES(?, ?, ?, ?, ?)");
 
             statement.setLong(1, 0);
             statement.setString(2, this.serializer().serialize(domainEvent));
@@ -81,7 +81,7 @@ public final class MySQLJdbcEventStore implements EventStore {
             PreparedStatement statement =
                     connection
                         .prepareStatement(
-                                "SELECT stream_version, event_type, event_body FROM event_store " +
+                                "SELECT stream_version, event_type, event_body FROM table_event_store " +
                                         "WHERE stream_name = ? AND stream_version >= ? " +
                                         "ORDER BY stream_version");
 

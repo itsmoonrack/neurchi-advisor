@@ -2,7 +2,7 @@ package com.neurchi.advisor.common.domain.model.process;
 
 public class TestableTimeConstrainedProcessTimedOut extends ProcessTimedOut {
 
-    public TestableTimeConstrainedProcessTimedOut(
+    TestableTimeConstrainedProcessTimedOut(
             final String tenantId,
             final ProcessId processId,
             final int totalRetriesPermitted,
@@ -11,7 +11,7 @@ public class TestableTimeConstrainedProcessTimedOut extends ProcessTimedOut {
         super(tenantId, processId, totalRetriesPermitted, retryCount);
     }
 
-    public TestableTimeConstrainedProcessTimedOut(
+    TestableTimeConstrainedProcessTimedOut(
             final String tenantId,
             final ProcessId processId) {
 

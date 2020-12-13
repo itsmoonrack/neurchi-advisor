@@ -9,14 +9,14 @@ public final class GroupCoverChanged implements DomainEvent {
 
     private Tenant tenant;
     private GroupId groupId;
-    private CoverPhoto cover;
+    private String cover;
     private int eventVersion;
     private Instant occurredOn;
 
     GroupCoverChanged(
             final Tenant tenant,
             final GroupId groupId,
-            final CoverPhoto cover) {
+            final String cover) {
 
         this.eventVersion = 1;
         this.groupId = groupId;
@@ -39,7 +39,7 @@ public final class GroupCoverChanged implements DomainEvent {
         return this.groupId;
     }
 
-    public CoverPhoto cover() {
+    public String cover() {
         return this.cover;
     }
 

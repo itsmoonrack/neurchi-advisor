@@ -3,7 +3,7 @@ package com.neurchi.advisor.subscription.domain.model.group;
 import com.neurchi.advisor.common.domain.model.DomainEvent;
 import com.neurchi.advisor.common.domain.model.EventSourcedRootEntity;
 import com.neurchi.advisor.subscription.domain.model.collaborator.Administrator;
-import com.neurchi.advisor.subscription.domain.model.collaborator.Participant;
+import com.neurchi.advisor.subscription.domain.model.collaborator.Subscriber;
 import com.neurchi.advisor.subscription.domain.model.tenant.Tenant;
 
 import java.time.Instant;
@@ -20,38 +20,46 @@ public final class Group extends EventSourcedRootEntity {
     private Instant createdOn;
     private String description;
     private String name;
-    private Participant creator;
     private Set<Administrator> administratedBy;
-    private CoverPhoto cover;
+    private String cover;
     private Integer memberCount;
+    private boolean closed;
 
     public Group(
             final Tenant tenant,
             final GroupId groupId,
             final Instant createdOn,
-            final Participant creator,
             final String name,
             final String description,
-            final CoverPhoto cover) {
+            final String cover) {
 
-        this.assertArgumentNotNull(creator, "The creator must be provided.");
         this.assertArgumentNotNull(groupId, "The group id must be provided.");
         this.assertArgumentNotNull(createdOn, "The created on date must be provided.");
         this.assertArgumentNotEmpty(name, "The name must be provided.");
         this.assertArgumentNotNull(tenant, "The tenant must be provided.");
 
-        this.apply(new SubscriptionStarted(creator, description, groupId, createdOn, cover, name, tenant));
+        this.apply(new GroupProvisionned(tenant, groupId, name, description, createdOn, cover));
     }
 
     public Group(final Stream<DomainEvent> eventStream, final int streamVersion) {
         super(eventStream, streamVersion);
     }
 
-    public void amendMemberCount(final Participant participant, final int memberCount) {
-        this.assertArgumentNotNull(participant, "The participant must be provided.");
+    public Subscription startSubscription(final Subscriber subscriber) {
+        this.assertStateFalse(this.isClosed(), "Group is closed.");
+
+        return new Subscription(
+                this.tenant(),
+                this.groupId(),
+                new SubscriptionId(subscriber.identity()),
+                subscriber);
+    }
+
+    public void amendMemberCount(final Subscriber subscriber, final int memberCount) {
+        this.assertArgumentNotNull(subscriber, "The participant must be provided.");
 
         if (this.memberCount() != memberCount) {
-            this.apply(new GroupMemberCountChanged(this.tenant(), this.groupId(), participant, memberCount, false));
+            this.apply(new GroupMemberCountChanged(this.tenant(), this.groupId(), subscriber, memberCount, false));
         }
     }
 
@@ -61,6 +69,10 @@ public final class Group extends EventSourcedRootEntity {
         if (this.memberCount() != memberCount) {
             this.apply(new GroupMemberCountChanged(this.tenant(), this.groupId(), administrator, memberCount, true));
         }
+    }
+
+    public boolean isClosed() {
+        return this.closed;
     }
 
     public int memberCount() {
@@ -109,21 +121,17 @@ public final class Group extends EventSourcedRootEntity {
         return name;
     }
 
-    public Participant creator() {
-        return creator;
-    }
-
     public Set<Administrator> allAdministratedBy() {
         return Collections.unmodifiableSet(this.administratedBy());
     }
 
-    public void changeCoverPhoto(final CoverPhoto cover) {
+    public void changeCoverPhoto(final String cover) {
         if (!Objects.equals(this.cover(), cover)) {
             this.apply(new GroupCoverChanged(this.tenant(), this.groupId(), cover));
         }
     }
 
-    public CoverPhoto cover() {
+    public String cover() {
         return cover;
     }
 
@@ -154,12 +162,11 @@ public final class Group extends EventSourcedRootEntity {
                 '}';
     }
 
-    protected void when(final SubscriptionStarted event) {
+    protected void when(final GroupProvisionned event) {
         this.tenant = event.tenant();
         this.groupId = event.groupId();
         this.description = event.description();
         this.name = event.name();
-        this.creator = event.creator();
         this.cover = event.cover();
         this.createdOn = event.occurredOn();
         this.administratedBy = new HashSet<>();

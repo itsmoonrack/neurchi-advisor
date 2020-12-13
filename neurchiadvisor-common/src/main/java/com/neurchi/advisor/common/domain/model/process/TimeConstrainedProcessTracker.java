@@ -204,7 +204,9 @@ public class TimeConstrainedProcessTracker extends AssertionConcern {
             final Class<?> processTimedOutClass =
                     Class.forName(this.processTimedOutEventType());
 
-            final Constructor<?> constructor = processTimedOutClass.getConstructor(String.class, ProcessId.class);
+            final Constructor<?> constructor = processTimedOutClass.getDeclaredConstructor(String.class, ProcessId.class);
+
+            constructor.setAccessible(true);
 
             processTimedOut = (ProcessTimedOut) constructor.newInstance(this.tenantId(), this.processId());
 
@@ -224,11 +226,13 @@ public class TimeConstrainedProcessTracker extends AssertionConcern {
 
             final Constructor<?> constructor =
                     processTimedOutClass
-                            .getConstructor(
+                            .getDeclaredConstructor(
                                     String.class,
                                     ProcessId.class,
                                     int.class,
                                     int.class);
+
+            constructor.setAccessible(true);
 
             processTimedOut = (ProcessTimedOut)
                     constructor.newInstance(

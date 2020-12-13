@@ -1,9 +1,8 @@
 package com.neurchi.advisor.advisory.port.adapter.web;
 
+import com.neurchi.advisor.advisory.application.group.GroupQueryService;
+import com.neurchi.advisor.advisory.application.group.data.GroupData;
 import com.neurchi.advisor.common.application.data.SearchQuery;
-import com.neurchi.advisor.subscription.application.data.GroupData;
-import com.neurchi.advisor.subscription.application.group.GroupQueryService;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ public final class GroupController {
 
     private final GroupQueryService groupQueryService;
 
-    public GroupController(final GroupQueryService groupQueryService) {
+    GroupController(final GroupQueryService groupQueryService) {
         this.groupQueryService = groupQueryService;
     }
 
@@ -32,8 +31,6 @@ public final class GroupController {
             final Pageable pageable) {
 
         final Page<GroupData> page = this.groupQueryService.allGroupsData(search, pageable);
-
-        LoggerFactory.getLogger(GroupController.class).info("Pageable: {}, totalPage {}", page, page.getTotalPages());
 
         model.addAttribute("page", page);
 

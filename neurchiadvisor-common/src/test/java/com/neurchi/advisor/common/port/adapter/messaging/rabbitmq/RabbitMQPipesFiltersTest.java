@@ -183,7 +183,7 @@ public class RabbitMQPipesFiltersTest {
 
             final NotificationReader reader = new NotificationReader(textMessage);
 
-            final String processId = reader.eventTextValue("processId");
+            final String processId = reader.eventStringValue("processId");
 
             final PhoneNumberProcess process = this.processes.get(processId);
 
@@ -223,7 +223,7 @@ public class RabbitMQPipesFiltersTest {
 
             final NotificationReader reader = new NotificationReader(textMessage);
 
-            final String allPhoneNumbers = reader.eventTextValue("allPhoneNumbers");
+            final String allPhoneNumbers = reader.eventStringValue("allPhoneNumbers");
 
             final String[] allPhoneNumbersToSearch = allPhoneNumbers.split("\n");
 
@@ -236,7 +236,7 @@ public class RabbitMQPipesFiltersTest {
                     new Notification(
                             1L,
                             new PhoneNumbersMatched(
-                                    reader.eventTextValue("processId"),
+                                    reader.eventStringValue("processId"),
                                     foundPhoneNumbers));
 
             send(notification);
@@ -262,7 +262,7 @@ public class RabbitMQPipesFiltersTest {
 
             final NotificationReader reader = new NotificationReader(textMessage);
 
-            final String allMatchedPhoneNumbers = reader.eventTextValue("matchedPhoneNumbers");
+            final String allMatchedPhoneNumbers = reader.eventStringValue("matchedPhoneNumbers");
 
             final String[] allPhoneNumbersToCount = allMatchedPhoneNumbers.split("\n");
 
@@ -270,7 +270,7 @@ public class RabbitMQPipesFiltersTest {
                     new Notification(
                             1L,
                             new MatchedPhoneNumbersCounted(
-                                    reader.eventTextValue("processId"),
+                                    reader.eventStringValue("processId"),
                                     allPhoneNumbersToCount.length));
 
             send(notification);
@@ -296,7 +296,7 @@ public class RabbitMQPipesFiltersTest {
 
             final NotificationReader reader = new NotificationReader(textMessage);
 
-            final String allPhoneNumbers = reader.eventTextValue("allPhoneNumbers");
+            final String allPhoneNumbers = reader.eventStringValue("allPhoneNumbers");
 
             final String[] allPhoneNumbersToCount = allPhoneNumbers.split("\n");
 
@@ -304,7 +304,7 @@ public class RabbitMQPipesFiltersTest {
                     new Notification(
                             1L,
                             new AllPhoneNumbersCounted(
-                                    reader.eventTextValue("processId"),
+                                    reader.eventStringValue("processId"),
                                     allPhoneNumbersToCount.length));
 
             send(notification);

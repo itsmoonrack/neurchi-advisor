@@ -19,11 +19,11 @@ class RepresentationReaderTest {
         RepresentationReader reader =
                 new RepresentationReader(USER_IN_ROLE_REPRESENTATION);
 
-        assertEquals("Author", reader.textValue("role"));
-        assertEquals("zoe", reader.textValue("username"));
-        assertEquals("A94A8298-43B8-4DA0-9917-13FFF9E116ED", reader.textValue("tenantId"));
-        assertEquals("Zoe", reader.textValue("firstName"));
-        assertEquals("Doe", reader.textValue("lastName"));
-        assertEquals("zoe@saasovation.com", reader.textValue("emailAddress"));
+        assertEquals("Author", reader.stringValue("role"));
+        assertEquals("zoe", reader.stringValue("username"));
+        assertEquals("A94A8298-43B8-4DA0-9917-13FFF9E116ED", reader.stringValue("tenantId"));
+        assertEquals("Zoe", reader.stringValue("firstName"));
+        assertEquals("Doe", reader.stringValue("lastName"));
+        assertEquals("zoe@saasovation.com", reader.stringValue("emailAddress"));
     }
 }

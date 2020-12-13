@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all" package="com.neurchi.advisor.advisory.domain.model.group">
+    <class name="Group" table="table_group" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="description" column="description"/>
+        <component name="subscription" class="GroupSubscription">
+            <property name="availability" column="subscription_availability">
+                <type name="org.hibernate.type.EnumType">
+                    <param name="enumClass">com.neurchi.advisor.advisory.domain.model.subscription.SubscriptionAvailability</param>
+                    <param name="useNamed">true</param>
+                </type>
+            </property>
+            <component name="descriptor" class="com.neurchi.advisor.advisory.domain.model.subscription.SubscriptionDescriptor">
+                <property name="id" column="subscription_descriptor"/>
+            </component>
+        </component>
+        <property name="subscriptionInitiationId" column="subscription_initiation_id" unique="true"/>
+        <property name="name" column="name"/>
+        <property name="memberCount" column="member_count"/>
+        <property name="createdOn" column="created_on"/>
+        <property name="cover" column="cover"/>
+        <component name="groupId" class="GroupId">
+            <property name="id" column="group_id" unique="true"/>
+        </component>
+        <component name="groupOwnerId" class="com.neurchi.advisor.advisory.domain.model.team.GroupOwnerId">
+            <property name="id" column="owner_id"/>
+            <property name="tenantId" column="tenant_id" insert="false" update="false"/>
+        </component>
+        <component name="tenantId" class="com.neurchi.advisor.advisory.domain.model.tenant.TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+    </class>
+</hibernate-mapping>

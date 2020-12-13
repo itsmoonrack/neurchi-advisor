@@ -1,40 +1,40 @@
 package com.neurchi.advisor.subscription.domain.model.group;
 
 import com.neurchi.advisor.common.domain.model.DomainEvent;
-import com.neurchi.advisor.subscription.domain.model.collaborator.Participant;
+import com.neurchi.advisor.subscription.domain.model.collaborator.Subscriber;
 import com.neurchi.advisor.subscription.domain.model.tenant.Tenant;
 
 import java.time.Instant;
 
 public final class SubscriptionStarted implements DomainEvent {
 
-    private Participant creator;
-    private String description;
+    private SubscriptionId subscriptionId;
+    private Subscriber subscriber;
     private int eventVersion;
     private GroupId groupId;
-    private String exclusiveOwner;
-    private CoverPhoto cover;
     private Instant occurredOn;
-    private String name;
     private Tenant tenant;
 
     SubscriptionStarted(
-            final Participant creator,
-            final String description,
+            final Tenant tenant,
             final GroupId groupId,
-            final Instant createdOn,
-            final CoverPhoto cover,
-            final String name,
-            final Tenant tenant) {
+            final SubscriptionId subscriptionId,
+            final Subscriber subscriber) {
 
-        this.creator = creator;
-        this.description = description;
+        this.subscriptionId = subscriptionId;
+        this.subscriber = subscriber;
         this.eventVersion = 1;
         this.groupId = groupId;
-        this.cover = cover;
-        this.occurredOn = createdOn;
-        this.name = name;
+        this.occurredOn = Instant.now();
         this.tenant = tenant;
+    }
+
+    public SubscriptionId subscriptionId() {
+        return this.subscriptionId;
+    }
+
+    public Subscriber subscriber() {
+        return this.subscriber;
     }
 
     @Override
@@ -47,24 +47,8 @@ public final class SubscriptionStarted implements DomainEvent {
         return this.occurredOn;
     }
 
-    public Participant creator() {
-        return creator;
-    }
-
-    public String description() {
-        return description;
-    }
-
     public GroupId groupId() {
         return groupId;
-    }
-
-    public CoverPhoto cover() {
-        return cover;
-    }
-
-    public String name() {
-        return name;
     }
 
     public Tenant tenant() {

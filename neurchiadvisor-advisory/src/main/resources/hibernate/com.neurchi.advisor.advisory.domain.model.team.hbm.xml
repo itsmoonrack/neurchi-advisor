@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.neurchi.advisor.advisory.domain.model.team" default-access="field" default-cascade="all">
+    <class name="Member" table="table_member" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="type"/>
+
+        <version name="concurrencyVersion" column="concurrency_version"/>
+
+        <component name="changeTracker" class="MemberChangeTracker">
+            <property name="nameChangedOn" column="name_changed_on"/>
+            <property name="emailAddressChangedOn" column="email_address_changed_on"/>
+            <property name="pictureChangedOn" column="picture_changed_on"/>
+            <property name="enabledOn" column="enabled_on"/>
+        </component>
+
+        <property name="emailAddress" column="email_address"/>
+        <property name="enabled" column="enabled"/>
+        <property name="firstName" column="first_name"/>
+        <property name="lastName" column="last_name"/>
+        <property name="name" column="name"/>
+        <property name="picture" column="picture"/>
+
+        <component name="tenantId" class="com.neurchi.advisor.advisory.domain.model.tenant.TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+
+        <property name="username" column="username" unique-key="k_username"/>
+
+        <subclass name="GroupOwner" discriminator-value="O"/>
+        <subclass name="TeamMember" discriminator-value="M"/>
+    </class>
+
+    <class name="Team" table="table_team">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+
+        <version name="concurrencyVersion" column="concurrency_version"/>
+
+        <property name="name"/>
+
+        <many-to-one name="groupOwner" class="GroupOwner" column="group_owner_id"/>
+
+        <set name="teamMembers" cascade="all,delete-orphan" lazy="true" table="table_team_member">
+            <key column="member_id"/>
+            <one-to-many class="TeamMember"/>
+        </set>
+
+        <component name="tenantId" class="com.neurchi.advisor.advisory.domain.model.tenant.TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+    </class>
+</hibernate-mapping>

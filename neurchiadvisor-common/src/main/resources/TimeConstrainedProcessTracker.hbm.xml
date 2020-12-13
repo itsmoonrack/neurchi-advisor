@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field" default-cascade="all">
-    <class name="com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTracker" table="time_constrained_process_tracker" lazy="true">
+    <class name="com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTracker" table="table_time_constrained_process_tracker" lazy="true">
         <id name="timeConstrainedProcessTrackerId" type="long" column="time_constrained_process_tracker_id" unsaved-value="-1">
             <generator class="native"/>
         </id>

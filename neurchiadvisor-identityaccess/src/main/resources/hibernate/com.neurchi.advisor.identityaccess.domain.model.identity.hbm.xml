@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field" default-cascade="all" package="com.neurchi.advisor.identityaccess.domain.model.identity">
+    <class name="Group" table="table_group" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="description" column="description"/>
+        <set name="groupMembers" cascade="all,delete-orphan" lazy="true">
+            <key column="group_id" not-null="true"/>
+            <one-to-many class="GroupMember"/>
+        </set>
+        <property name="name" column="name"/>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+    </class>
+
+    <class name="GroupMember" table="table_group_member" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <property name="name" column="name"/>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+        <property name="type" column="type">
+            <type name="org.hibernate.type.EnumType">
+                <param name="enumClass">com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberType</param>
+                <param name="useNamed">true</param>
+            </type>
+        </property>
+    </class>
+
+    <class name="Person" table="table_person" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="foreign">
+                <param name="property">user</param>
+            </generator>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <component name="contactInformation" class="ContactInformation">
+            <component name="emailAddress" class="EmailAddress">
+                <property name="address" column="contact_information_email_address_address"/>
+            </component>
+        </component>
+        <component name="name" class="FullName">
+            <property name="firstName" column="name_first_name"/>
+            <property name="lastName" column="name_last_name"/>
+        </component>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+        <one-to-one name="user" class="User" cascade="all" lazy="false" constrained="true"/>
+    </class>
+
+    <class name="RegistrationInvitation" table="table_registration_invitation" lazy="true">
+        <id name="id" type="long" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="description" column="description"/>
+        <property name="invitationId" column="invitation_id"/>
+        <property name="startingOn" column="starting_on"/>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+        <property name="until" column="until"/>
+    </class>
+
+    <class name="User" table="table_user" lazy="true">
+        <id name="id" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <component name="accessToken" class="AccessToken">
+            <property name="accessToken" column="access_token"/>
+            <property name="tokenType" column="access_token_type"/>
+            <property name="expiresIn" column="access_token_expires_in"/>
+        </component>
+        <component name="enablement" class="Enablement">
+            <property name="enabled" column="enablement_enabled"/>
+            <property name="endDate" column="enablement_end_date"/>
+            <property name="startDate" column="enablement_start_date"/>
+        </component>
+        <one-to-one name="person" class="Person" cascade="all" lazy="false"/>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+        <property name="username" column="username" unique="true" update="false"/>
+    </class>
+
+    <class name="Tenant" table="table_tenant" lazy="true">
+        <id name="id" type="long" column="id" unsaved-value="-1">
+            <generator class="native"/>
+        </id>
+        <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="active" column="active"/>
+        <property name="description" column="description"/>
+        <property name="name" column="name"/>
+        <set name="registrationInvitations" cascade="all,delete-orphan" lazy="true">
+            <key column="tenant" not-null="true"/>
+            <one-to-many class="RegistrationInvitation"/>
+        </set>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
+    </class>
+</hibernate-mapping>

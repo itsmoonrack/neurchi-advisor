@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
-public class Notification extends AssertionConcern implements Serializable {
+public final class Notification extends AssertionConcern implements Serializable {
 
     private DomainEvent event;
     private long notificationId;

@@ -25,9 +25,11 @@ public abstract class AbstractSerializer {
     protected AbstractSerializer(final boolean isCompact, final boolean isPretty) {
         this.objectMapper = new ObjectMapper()
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                .setVisibility(PropertyAccessor.CREATOR, JsonAutoDetect.Visibility.ANY)
                 .setSerializationInclusion(isCompact ? JsonInclude.Include.NON_ABSENT : JsonInclude.Include.ALWAYS)
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .configure(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES, false)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                 .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(SerializationFeature.INDENT_OUTPUT, isPretty)
                 .setAnnotationIntrospector(new PropertiesModeAnnotationIntrospector())

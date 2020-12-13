@@ -10,8 +10,6 @@ import com.neurchi.advisor.subscription.domain.model.group.GroupRepository;
 import com.neurchi.advisor.subscription.domain.model.tenant.Tenant;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public class EventStoreGroupRepository implements GroupRepository {
 
@@ -22,7 +20,7 @@ public class EventStoreGroupRepository implements GroupRepository {
     }
 
     @Override
-    public Optional<Group> groupOfId(final Tenant tenant, final GroupId groupId) {
+    public Group groupOfId(final Tenant tenant, final GroupId groupId) {
 
         try {
             // snapshots not currently supported; always use version 1
@@ -33,10 +31,10 @@ public class EventStoreGroupRepository implements GroupRepository {
 
             Group group = new Group(eventStream.events(), eventStream.version());
 
-            return Optional.of(group);
+            return group;
 
         } catch (EventStoreVersionException e) {
-            return Optional.empty();
+            return null;
         }
     }
 

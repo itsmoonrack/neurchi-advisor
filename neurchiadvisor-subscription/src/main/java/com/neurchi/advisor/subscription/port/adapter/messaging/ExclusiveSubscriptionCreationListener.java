@@ -6,6 +6,8 @@ import com.neurchi.advisor.common.port.adapter.messaging.rabbitmq.ExchangeListen
 import com.neurchi.advisor.subscription.application.group.GroupApplicationService;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+
 @Component
 public class ExclusiveSubscriptionCreationListener extends ExchangeListener {
 
@@ -24,17 +26,24 @@ public class ExclusiveSubscriptionCreationListener extends ExchangeListener {
     protected void filteredDispatch(final String type, final String textMessage) {
         final NotificationReader reader = new NotificationReader(textMessage);
 
-        final String tenantId = reader.eventTextValue("tenantId");
-        final String exclusiveOwnerId = reader.eventTextValue("exclusiveOwnerId");
-        final String creatorId = reader.eventTextValue("creatorId");
-        final String administratorId = reader.eventTextValue("administratorId");
+        final String tenantId = reader.eventStringValue("tenantId");
+        final String exclusiveOwnerId = reader.eventStringValue("exclusiveOwnerId");
+        final String subscriberId = reader.eventStringValue("subscriberId");
+        final String groupName = reader.eventStringValue("groupName");
+        final Integer groupMemberCount = reader.eventIntegerValue("groupMemberCount");
+        final String groupDescription = reader.eventStringValue("groupDescription");
+        final Instant groupCreatedOn = reader.eventInstantValue("groupCreatedOn");
+        final String groupCoverPhoto = reader.eventStringValue("groupCoverPhoto");
 
         groupApplicationService
-                .startExclusiveSubscriptionWithGroup(
+                .provisionGroupWithSubscription(
                         tenantId,
                         exclusiveOwnerId,
-                        creatorId,
-                        administratorId);
+                        subscriberId,
+                        groupCreatedOn,
+                        groupName,
+                        groupDescription,
+                        groupCoverPhoto);
     }
 
     @Override

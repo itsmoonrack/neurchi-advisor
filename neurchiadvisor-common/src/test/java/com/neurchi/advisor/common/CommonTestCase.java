@@ -28,7 +28,7 @@ public abstract class CommonTestCase {
 
         DomainEventPublisher.instance().reset();
 
-        this.applicationContext = new ClassPathXmlApplicationContext("applicationContext-common.xml");
+        this.applicationContext = new ClassPathXmlApplicationContext("application-context-common.xml");
 
         this.sessionProvider = this.applicationContext.getBean("sessionProvider", SpringHibernateSessionProvider.class);
 

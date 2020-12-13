@@ -2,6 +2,7 @@ package com.neurchi.advisor.common.port.adapter.persistence.hibernate;
 
 import com.neurchi.advisor.common.spring.SpringHibernateSessionProvider;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractHibernateSession {
 
@@ -9,7 +10,7 @@ public abstract class AbstractHibernateSession {
     private SpringHibernateSessionProvider sessionProvider;
 
     protected AbstractHibernateSession() {
-
+        super();
     }
 
     protected AbstractHibernateSession(final Session session) {
@@ -21,7 +22,7 @@ public abstract class AbstractHibernateSession {
 
         if (actualSession == null) {
             if (this.sessionProvider == null) {
-                throw new IllegalStateException("Requires either a Session or SpringHibernateSessionProvider.");
+                throw new IllegalStateException("Required either a Session or SpringHibernateSessionProvider.");
             }
 
             actualSession = this.sessionProvider.session();
@@ -41,6 +42,7 @@ public abstract class AbstractHibernateSession {
         this.session = session;
     }
 
+    @Autowired
     public void setSessionProvider(final SpringHibernateSessionProvider sessionProvider) {
         this.sessionProvider = sessionProvider;
     }

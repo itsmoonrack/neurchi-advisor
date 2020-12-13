@@ -5,7 +5,6 @@ import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
 import com.neurchi.advisor.common.domain.model.DomainEventSubscriber;
 import com.neurchi.advisor.common.domain.model.process.Process;
 import com.neurchi.advisor.common.domain.model.process.*;
-import com.neurchi.advisor.common.persistence.PersistenceManagerProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,7 +44,7 @@ class HibernateTimeConstrainedProcessTrackerRepositoryTest extends CommonTestCas
         TimeConstrainedProcessTracker tracker =
                 process.timeConstrainedProcessTracker();
 
-        trackerRepository.save(tracker);
+        trackerRepository.add(tracker);
 
         process.confirm1();
 
@@ -93,8 +92,8 @@ class HibernateTimeConstrainedProcessTrackerRepositoryTest extends CommonTestCas
         TimeConstrainedProcessTracker tracker2 =
                 process2.timeConstrainedProcessTracker();
 
-        trackerRepository.save(tracker1);
-        trackerRepository.save(tracker2);
+        trackerRepository.add(tracker1);
+        trackerRepository.add(tracker2);
 
         Thread.sleep(500); // forced timeout of process1
 
@@ -106,10 +105,7 @@ class HibernateTimeConstrainedProcessTrackerRepositoryTest extends CommonTestCas
     protected void setUp() throws Exception {
         super.setUp();
 
-        this.trackerRepository =
-                new HibernateTimeConstrainedProcessTrackerRepository(
-                        new PersistenceManagerProvider(
-                                this.session()));
+        this.trackerRepository = this.applicationContext
+                .getBean(TimeConstrainedProcessTrackerRepository.class);
     }
-
 }

@@ -8,6 +8,6 @@ public interface CollaboratorService {
 
     Administrator administratorFrom(GroupId groupId, String identity);
 
-    Participant participantFrom(GroupId groupId, String identity);
+    Subscriber subscriberFrom(GroupId groupId, String identity);
 
 }

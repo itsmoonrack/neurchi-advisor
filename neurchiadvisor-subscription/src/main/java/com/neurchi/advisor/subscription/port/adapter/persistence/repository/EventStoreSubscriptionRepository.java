@@ -12,4 +12,9 @@ public class EventStoreSubscriptionRepository implements SubscriptionRepository 
     public Subscription subscriptionOfId(final String tenantId, final SubscriptionId subscriptionId) {
         return null;
     }
+
+    @Override
+    public void save(final Subscription subscription) {
+
+    }
 }
