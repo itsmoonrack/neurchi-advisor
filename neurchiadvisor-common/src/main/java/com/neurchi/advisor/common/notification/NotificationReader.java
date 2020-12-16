@@ -21,13 +21,9 @@ public class NotificationReader extends AbstractJSONMediaReader {
         this.setEvent(this.representation().get("event"));
     }
 
-    public String eventStringValue(final String... keys) {
-        return this.stringValue(this.event(), keys);
-    }
-
-    public Integer eventIntegerValue(final String... keys) {
+    public Instant eventInstantValue(final String... keys) {
         String stringValue = this.stringValue(this.event(), keys);
-        return stringValue == null ? null : Integer.parseInt(stringValue);
+        return stringValue == null ? null : Instant.parse(stringValue);
     }
 
     public Boolean eventBooleanValue(final String... keys) {
@@ -35,9 +31,18 @@ public class NotificationReader extends AbstractJSONMediaReader {
         return stringValue == null ? null : Boolean.parseBoolean(stringValue);
     }
 
-    public Instant eventInstantValue(final String... keys) {
+    public Integer eventIntegerValue(final String... keys) {
         String stringValue = this.stringValue(this.event(), keys);
-        return stringValue == null ? null : Instant.parse(stringValue);
+        return stringValue == null ? null : Integer.parseInt(stringValue);
+    }
+
+    public Long eventLongValue(final String... keys) {
+        String stringValue = this.stringValue(this.event(), keys);
+        return stringValue == null ? null : Long.parseLong(stringValue);
+    }
+
+    public String eventStringValue(final String... keys) {
+        return this.stringValue(this.event(), keys);
     }
 
     public long notificationId() {

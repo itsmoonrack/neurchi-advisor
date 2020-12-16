@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.joining;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RabbitMQPipesFiltersTest {
+class RabbitMQPipesFiltersTest {
 
     private final Logger logger = LoggerFactory.getLogger(RabbitMQPipesFiltersTest.class);
 

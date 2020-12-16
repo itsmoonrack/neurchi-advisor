@@ -5,8 +5,8 @@ import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
 import com.neurchi.advisor.common.domain.model.DomainEventSubscriber;
 import com.neurchi.advisor.common.domain.model.process.Process;
 import com.neurchi.advisor.common.domain.model.process.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Duration;
 
@@ -18,6 +18,7 @@ class HibernateTimeConstrainedProcessTrackerRepositoryTest extends CommonTestCas
 
     private TestableTimeConstrainedProcess process;
     private boolean received;
+    @Autowired
     private TimeConstrainedProcessTrackerRepository trackerRepository;
 
     @Test
@@ -99,13 +100,5 @@ class HibernateTimeConstrainedProcessTrackerRepositoryTest extends CommonTestCas
 
         assertEquals(2, trackerRepository.allTrackers(process1.tenantId()).count());
         assertEquals(1, trackerRepository.allTimedOut().count());
-    }
-
-    @BeforeEach
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        this.trackerRepository = this.applicationContext
-                .getBean(TimeConstrainedProcessTrackerRepository.class);
     }
 }

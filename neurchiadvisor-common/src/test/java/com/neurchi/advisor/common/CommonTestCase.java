@@ -6,13 +6,20 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith({SpringExtension.class})
+@ContextConfiguration("classpath:application-context-common.xml")
 public abstract class CommonTestCase {
 
+    @Autowired
     protected ApplicationContext applicationContext;
-    protected SpringHibernateSessionProvider sessionProvider;
+    @Autowired
+    private SpringHibernateSessionProvider sessionProvider;
     private Transaction transaction;
 
     protected Session session() {
@@ -27,10 +34,6 @@ public abstract class CommonTestCase {
     protected void setUp() throws Exception {
 
         DomainEventPublisher.instance().reset();
-
-        this.applicationContext = new ClassPathXmlApplicationContext("application-context-common.xml");
-
-        this.sessionProvider = this.applicationContext.getBean("sessionProvider", SpringHibernateSessionProvider.class);
 
         this.setTransaction(this.session().beginTransaction());
     }

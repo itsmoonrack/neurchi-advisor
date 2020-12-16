@@ -9,6 +9,7 @@ import com.neurchi.advisor.identityaccess.application.command.ProvisionTenantCom
 import com.neurchi.advisor.identityaccess.application.command.RegisterUserCommand;
 import com.neurchi.advisor.identityaccess.domain.model.identity.*;
 import org.junit.jupiter.api.Test;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
@@ -100,25 +101,92 @@ public class NotificationResourceTest extends ResourceTest {
     }
 
     @Test
-    public void TestTenantProvisionedNotification() {
+    public void TestTenantProvisionedNotification() throws Exception {
         Tenant newTenant =
                 this
-                    .identityApplicationService()
-                    .provisionTenant(
-                            new ProvisionTenantCommand(
-                                    "298448690577160",
-                                    "Neurchi de Finances: The Bottom Fishing Club",
-                                    "10157329112631392",
-                                    "Sylvain",
-                                    "Bernard",
-                                    "access-token",
-                                    "bearer",
-                                    LocalDateTime.now().plusDays(90),
-                                    "sylvain@neurchiadvisor.com"));
+                        .identityApplicationService()
+                        .provisionTenant(
+                                new ProvisionTenantCommand(
+                                        "298448690577160",
+                                        "Neurchi de Finances: The Bottom Fishing Club",
+                                        "10157329112631392",
+                                        "Sylvain",
+                                        "Bernard",
+                                        "access-token",
+                                        "bearer",
+                                        LocalDateTime.now().plusDays(90),
+                                        "sylvain@neurchiadvisor.com"));
 
         assertNotNull(newTenant);
 
+        URI uri = new URI("http://localhost:" + this.port() + "/notifications");
 
+        ResponseEntity<String> response = this.restTemplate().getForEntity(uri, String.class);
+
+        NotificationLogReader log =
+                new NotificationLogReader(
+                        response.getBody(),
+                        response.getHeaders().getOrEmpty(HttpHeaders.LINK));
+
+        assertFalse(log.isArchived());
+        assertNotNull(log.id());
+
+        boolean found = false;
+
+        for (NotificationReader notification : log) {
+            String typeName = notification.typeName();
+
+            if (typeName.endsWith("TenantProvisioned")) {
+                String tenantId = notification.eventStringValue("tenantId.id");
+
+                assertEquals(newTenant.tenantId().id(), tenantId);
+
+                found = true;
+            }
+        }
+
+        assertTrue(found);
+    }
+
+    @Test
+    public void TestNotificationNavigation() throws Exception {
+        this.generateUserEvents();
+
+        URI uri = new URI("http://localhost:" + this.port() + "/notifications");
+
+        ResponseEntity<String> response = this.restTemplate().getForEntity(uri, String.class);
+
+        NotificationLogReader log =
+                new NotificationLogReader(
+                        response.getBody(),
+                        response.getHeaders().getOrEmpty(HttpHeaders.LINK));
+
+        assertFalse(log.isArchived());
+        assertNotNull(log.id());
+        assertFalse(log.hasNext());
+        assertTrue(log.hasSelf());
+        assertTrue(log.hasPrevious());
+
+        int count = 0;
+
+        while (log.hasPrevious()) {
+            ++count;
+
+            Link previous = log.previous();
+
+            response = this.restTemplate().getForEntity(previous.toUri(), String.class);
+
+            log = new NotificationLogReader(
+                    response.getBody(),
+                    response.getHeaders().getOrEmpty(HttpHeaders.LINK));
+
+            assertTrue(log.isArchived());
+            assertNotNull(log.id());
+            assertTrue(log.hasNext());
+            assertTrue(log.hasSelf());
+        }
+
+        assertTrue(count >= 1);
     }
 
     private void generateUserEvents() {

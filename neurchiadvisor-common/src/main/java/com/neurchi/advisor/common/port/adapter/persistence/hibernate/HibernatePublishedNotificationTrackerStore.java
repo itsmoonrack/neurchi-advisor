@@ -3,6 +3,7 @@ package com.neurchi.advisor.common.port.adapter.persistence.hibernate;
 import com.neurchi.advisor.common.notification.Notification;
 import com.neurchi.advisor.common.notification.PublishedNotificationTracker;
 import com.neurchi.advisor.common.notification.PublishedNotificationTrackerStore;
+import com.neurchi.advisor.common.persistence.PersistenceManagerProvider;
 
 import java.util.List;
 
@@ -12,11 +13,19 @@ public class HibernatePublishedNotificationTrackerStore
 
     private String typeName;
 
-    HibernatePublishedNotificationTrackerStore(final String typeName) {
+    public HibernatePublishedNotificationTrackerStore(
+            final PersistenceManagerProvider persistenceManagerProvider,
+            final String typeName) {
+
+        if (!persistenceManagerProvider.hasHibernateSession()) {
+            throw new IllegalArgumentException("The PersistenceManagerProvider must have a Hibernate Session.");
+        }
+
+        this.setSession(persistenceManagerProvider.hibernateSession());
         this.setTypeName(typeName);
     }
 
-    HibernatePublishedNotificationTrackerStore() {
+    public HibernatePublishedNotificationTrackerStore() {
 
     }
 

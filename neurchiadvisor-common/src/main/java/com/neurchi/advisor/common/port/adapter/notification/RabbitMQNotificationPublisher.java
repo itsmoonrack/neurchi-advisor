@@ -18,7 +18,7 @@ public class RabbitMQNotificationPublisher implements NotificationPublisher {
     private final String exchangeName;
     private final PublishedNotificationTrackerStore publishedNotificationTrackerStore;
 
-    RabbitMQNotificationPublisher(
+    public RabbitMQNotificationPublisher(
             final EventStore eventStore,
             final PublishedNotificationTrackerStore publishedNotificationTrackerStore,
             final Object messagingLocator) {
