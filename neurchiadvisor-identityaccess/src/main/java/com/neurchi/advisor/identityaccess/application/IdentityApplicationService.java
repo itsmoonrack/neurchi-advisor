@@ -2,33 +2,23 @@ package com.neurchi.advisor.identityaccess.application;
 
 import com.neurchi.advisor.identityaccess.application.command.*;
 import com.neurchi.advisor.identityaccess.domain.model.identity.*;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
 public class IdentityApplicationService {
 
-    private final GroupMemberService groupMemberService;
-    private final GroupRepository groupRepository;
-    private final TenantProvisioningService tenantProvisioningService;
-    private final TenantRepository tenantRepository;
-    private final UserRepository userRepository;
-
-    IdentityApplicationService(
-            final GroupMemberService groupMemberService,
-            final GroupRepository groupRepository,
-            final TenantProvisioningService tenantProvisioningService,
-            final TenantRepository tenantRepository,
-            final UserRepository userRepository) {
-
-        this.groupMemberService = groupMemberService;
-        this.groupRepository = groupRepository;
-        this.tenantProvisioningService = tenantProvisioningService;
-        this.tenantRepository = tenantRepository;
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private GroupMemberService groupMemberService;
+    @Autowired
+    private GroupRepository groupRepository;
+    @Autowired
+    private TenantProvisioningService tenantProvisioningService;
+    @Autowired
+    private TenantRepository tenantRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public void activateTenant(final ActivateTenantCommand command) {

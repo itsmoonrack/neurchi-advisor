@@ -27,22 +27,27 @@
 <!--        <security:user name="admin" authorities="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
 <!--    </security:user-service>-->
 
-    <context:component-scan base-package="com.neurchi.advisor.identityaccess.application"/>
+    <bean id="accessApplicationService" class="com.neurchi.advisor.identityaccess.application.AccessApplicationService"/>
 
-    <bean id="eventProcessor" class="com.neurchi.advisor.identityaccess.application.IdentityAccessEventProcessor"
-          scope="prototype">
+    <bean id="eventProcessor" class="com.neurchi.advisor.identityaccess.application.IdentityAccessEventProcessor" scope="prototype">
         <constructor-arg type="com.neurchi.advisor.common.event.EventStore" ref="eventStore"/>
     </bean>
 
-    <bean id="notificationPublisher"
-          class="com.neurchi.advisor.common.port.adapter.notification.RabbitMQNotificationPublisher">
+    <bean id="eventStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernateEventStore">
+        <property name="sessionProvider" ref="sessionProvider"/>
+    </bean>
+
+    <bean id="identityApplicationService" class="com.neurchi.advisor.identityaccess.application.IdentityApplicationService"/>
+
+    <bean id="notificationApplicationService" class="com.neurchi.advisor.identityaccess.application.NotificationApplicationService"/>
+    
+    <bean id="notificationPublisher" class="com.neurchi.advisor.common.port.adapter.notification.RabbitMQNotificationPublisher">
         <constructor-arg index="0" ref="eventStore"/>
         <constructor-arg index="1" ref="publishedNotificationTrackerStore"/>
         <constructor-arg index="2" value="neurchiAdvisorIdentityAccess"/>
     </bean>
 
-    <bean id="publishedNotificationTrackerStore"
-          class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore">
-        <property name="sessionProvider" ref="sessionProvider"/>
-    </bean>
+    <bean id="publishedNotificationTrackerStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore"/>
+
+    <context:component-scan base-package="com.neurchi.advisor.identityaccess.resource"/>
 </beans>

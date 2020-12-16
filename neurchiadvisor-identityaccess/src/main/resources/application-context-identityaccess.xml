@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
        http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <context:component-scan base-package="com.neurchi.advisor.identityaccess.domain.model"/>
-    <context:component-scan base-package="com.neurchi.advisor.identityaccess.infrastructure"/>
+    <bean id="authorizationService" class="com.neurchi.advisor.identityaccess.domain.model.access.AuthorizationService">
+        <constructor-arg index="0" ref="userRepository"/>
+        <constructor-arg index="1" ref="groupRepository"/>
+        <constructor-arg index="2" ref="roleRepository"/>
+    </bean>
+
+    <bean id="groupMemberService" class="com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberService">
+        <constructor-arg index="0" ref="userRepository"/>
+        <constructor-arg index="1" ref="groupRepository"/>
+    </bean>
+
+    <bean id="groupRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.HibernateGroupRepository"/>
+
+    <bean id="roleRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.HibernateRoleRepository"/>
+
+    <bean id="tenantProvisioningService" class="com.neurchi.advisor.identityaccess.domain.model.identity.TenantProvisioningService">
+        <constructor-arg index="0" ref="tenantRepository"/>
+        <constructor-arg index="1" ref="userRepository"/>
+        <constructor-arg index="2" ref="roleRepository"/>
+    </bean>
+
+    <bean id="tenantRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.HibernateTenantRepository"/>
+
+    <bean id="userRepository" class="com.neurchi.advisor.identityaccess.infrastructure.persistence.HibernateUserRepository"/>
 
 </beans>

@@ -4,25 +4,11 @@ import com.neurchi.advisor.common.domain.model.DomainEvent;
 import com.neurchi.advisor.common.event.EventSerializer;
 import com.neurchi.advisor.common.event.EventStore;
 import com.neurchi.advisor.common.event.StoredEvent;
-import com.neurchi.advisor.common.persistence.PersistenceManagerProvider;
 import org.hibernate.query.Query;
 
 import java.util.stream.Stream;
 
 public class HibernateEventStore extends AbstractHibernateSession implements EventStore {
-
-    public HibernateEventStore(final PersistenceManagerProvider persistenceManagerProvider) {
-
-        if (!persistenceManagerProvider.hasHibernateSession()) {
-            throw new IllegalArgumentException("The PersistenceManagerProvider must have a Hibernate session.");
-        }
-
-        this.setSession(persistenceManagerProvider.hibernateSession());
-    }
-
-    public HibernateEventStore() {
-        super();
-    }
 
     @Override
     public Stream<StoredEvent> allStoredEventsBetween(final long lowStoredEventId, final long highStoredEventId) {

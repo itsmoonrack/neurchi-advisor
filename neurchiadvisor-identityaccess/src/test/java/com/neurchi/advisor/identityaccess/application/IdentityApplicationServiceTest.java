@@ -38,7 +38,7 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
         Group childGroup = this.group2Aggregate();
         groupRepository().add(childGroup);
 
-        assertEquals(0, parentGroup.groupMembers().count());
+        assertEquals(0, parentGroup.groupMembers().size());
 
         this
                 .identityApplicationService()
@@ -47,7 +47,7 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
                         parentGroup.name(),
                         childGroup.name()));
 
-        assertEquals(1, parentGroup.groupMembers().count());
+        assertEquals(1, parentGroup.groupMembers().size());
     }
 
     @Test
@@ -61,8 +61,8 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
         User user = this.userAggregate();
         userRepository().add(user);
 
-        assertEquals(0, parentGroup.groupMembers().count());
-        assertEquals(0, childGroup.groupMembers().count());
+        assertEquals(0, parentGroup.groupMembers().size());
+        assertEquals(0, childGroup.groupMembers().size());
 
         parentGroup.addGroup(childGroup, groupMemberService());
 
@@ -73,8 +73,8 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
                         childGroup.name(),
                         user.username()));
 
-        assertEquals(1, parentGroup.groupMembers().count());
-        assertEquals(1, childGroup.groupMembers().count());
+        assertEquals(1, parentGroup.groupMembers().size());
+        assertEquals(1, childGroup.groupMembers().size());
         assertTrue(parentGroup.isMember(user, groupMemberService()));
         assertTrue(childGroup.isMember(user, groupMemberService()));
     }
@@ -236,8 +236,8 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
         User user = this.userAggregate();
         userRepository().add(user);
 
-        assertEquals(0, parentGroup.groupMembers().count());
-        assertEquals(0, childGroup.groupMembers().count());
+        assertEquals(0, parentGroup.groupMembers().size());
+        assertEquals(0, childGroup.groupMembers().size());
 
         parentGroup.addGroup(childGroup, groupMemberService());
         childGroup.addUser(user);
@@ -269,7 +269,7 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
 
         parentGroup.addGroup(childGroup, groupMemberService());
 
-        assertEquals(1, parentGroup.groupMembers().count());
+        assertEquals(1, parentGroup.groupMembers().size());
 
         this
                 .identityApplicationService()
@@ -278,7 +278,7 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
                         parentGroup.name(),
                         childGroup.name()));
 
-        assertEquals(0, parentGroup.groupMembers().count());
+        assertEquals(0, parentGroup.groupMembers().size());
     }
 
     @Test
@@ -295,8 +295,8 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
         parentGroup.addGroup(childGroup, groupMemberService());
         childGroup.addUser(user);
 
-        assertEquals(1, parentGroup.groupMembers().count());
-        assertEquals(1, childGroup.groupMembers().count());
+        assertEquals(1, parentGroup.groupMembers().size());
+        assertEquals(1, childGroup.groupMembers().size());
         assertTrue(parentGroup.isMember(user, groupMemberService()));
         assertTrue(childGroup.isMember(user, groupMemberService()));
 
@@ -307,8 +307,8 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
                         childGroup.name(),
                         user.username()));
 
-        assertEquals(1, parentGroup.groupMembers().count());
-        assertEquals(0, childGroup.groupMembers().count());
+        assertEquals(1, parentGroup.groupMembers().size());
+        assertEquals(0, childGroup.groupMembers().size());
         assertFalse(parentGroup.isMember(user, groupMemberService()));
         assertFalse(childGroup.isMember(user, groupMemberService()));
     }

@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -37,9 +36,25 @@ public abstract class ApplicationServiceTest {
     protected static final String FIXTURE_USERNAME2 = "zdoe";
 
     @Autowired
-    private ApplicationContext applicationContext;
-    @Autowired
     protected EventStore eventStore;
+    @Autowired
+    protected GroupRepository groupRepository;
+    @Autowired
+    protected UserRepository userRepository;
+    @Autowired
+    protected TenantRepository tenantRepository;
+    @Autowired
+    protected RoleRepository roleRepository;
+    @Autowired
+    protected GroupMemberService groupMemberService;
+    @Autowired
+    protected TenantProvisioningService tenantProvisioningService;
+    @Autowired
+    protected AccessApplicationService accessApplicationService;
+    @Autowired
+    protected IdentityApplicationService identityApplicationService;
+    @Autowired
+    protected NotificationApplicationService notificationApplicationService;
 
     private Tenant activeTenant;
 
@@ -129,38 +144,38 @@ public abstract class ApplicationServiceTest {
     }
 
     protected UserRepository userRepository() {
-        return applicationContext.getBean(UserRepository.class);
+        return userRepository;
     }
 
     protected TenantRepository tenantRepository() {
-        return applicationContext.getBean(TenantRepository.class);
+        return tenantRepository;
     }
 
     protected GroupRepository groupRepository() {
-        return applicationContext.getBean(GroupRepository.class);
+        return groupRepository;
     }
 
     protected RoleRepository roleRepository() {
-        return applicationContext.getBean(RoleRepository.class);
+        return roleRepository;
     }
 
     protected GroupMemberService groupMemberService() {
-        return applicationContext.getBean(GroupMemberService.class);
+        return groupMemberService;
     }
 
     protected TenantProvisioningService tenantProvisioningService() {
-        return applicationContext.getBean(TenantProvisioningService.class);
+        return tenantProvisioningService;
     }
 
     protected AccessApplicationService accessApplicationService() {
-        return applicationContext.getBean(AccessApplicationService.class);
+        return accessApplicationService;
     }
 
     protected IdentityApplicationService identityApplicationService() {
-        return applicationContext.getBean(IdentityApplicationService.class);
+        return identityApplicationService;
     }
 
     protected NotificationApplicationService notificationApplicationService() {
-        return applicationContext.getBean(NotificationApplicationService.class);
+        return notificationApplicationService;
     }
 }

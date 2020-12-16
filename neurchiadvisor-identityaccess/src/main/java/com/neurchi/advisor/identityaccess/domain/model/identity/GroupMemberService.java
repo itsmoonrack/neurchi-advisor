@@ -1,8 +1,5 @@
 package com.neurchi.advisor.identityaccess.domain.model.identity;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class GroupMemberService {
 
     private final GroupRepository groupRepository;
@@ -21,7 +18,7 @@ public class GroupMemberService {
     }
 
     public boolean isMemberGroup(final Group group, final GroupMember groupMember) {
-        return group.groupMembers()
+        return group.groupMembers().stream()
                 .filter(GroupMember::isGroup)
                 .anyMatch(member -> groupMember.equals(member) || groupRepository
                         .groupNamed(member.tenantId(), member.name())
@@ -30,7 +27,7 @@ public class GroupMemberService {
     }
 
     public boolean isUserInNestedGroup(final Group group, final User user) {
-        return group.groupMembers()
+        return group.groupMembers().stream()
                 .filter(GroupMember::isGroup)
                 .anyMatch(member -> groupRepository
                         .groupNamed(member.tenantId(), member.name())

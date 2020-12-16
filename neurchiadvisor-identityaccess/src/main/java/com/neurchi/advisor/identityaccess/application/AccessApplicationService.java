@@ -3,27 +3,19 @@ package com.neurchi.advisor.identityaccess.application;
 import com.neurchi.advisor.identityaccess.application.command.AssignUserToRoleCommand;
 import com.neurchi.advisor.identityaccess.domain.model.access.RoleRepository;
 import com.neurchi.advisor.identityaccess.domain.model.identity.*;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
 public class AccessApplicationService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final GroupRepository groupRepository;
-
-    AccessApplicationService(
-            final UserRepository userRepository,
-            final RoleRepository roleRepository,
-            final GroupRepository groupRepository) {
-
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.groupRepository = groupRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private GroupRepository groupRepository;
 
     @Transactional
     public void assignUserToRole(final AssignUserToRoleCommand command) {

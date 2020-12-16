@@ -31,7 +31,8 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
-    <bean id="abstractTransactionalServiceProxy" abstract="true" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <bean id="abstractTransactionalServiceProxy" abstract="true"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager" ref="transactionManager"/>
         <property name="transactionAttributes">
             <props>
@@ -44,14 +45,8 @@
         <property name="sessionProvider" ref="sessionProvider"/>
     </bean>
 
-    <bean id="dataSource" destroy-method="close" class="com.zaxxer.hikari.HikariDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="jdbcUrl"
-                  value="jdbc:mysql://localhost:3306/neurchiadvisor_common_test?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true"/>
-        <property name="username" value="neurchi"/>
-        <property name="password" value="neurchi"/>
-        <property name="autoCommit" value="false"/>
-    </bean>
+    <bean id="publishedNotificationTrackerStore"
+          class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore"/>
 
     <bean id="timeConstrainedProcessTrackerRepository"
           class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernateTimeConstrainedProcessTrackerRepository"/>

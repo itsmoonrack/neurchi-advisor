@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!DOCTYPE hibernate-mapping PUBLIC
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
@@ -11,9 +10,10 @@
         </id>
         <version name="concurrencyVersion" column="concurrency_version"/>
         <property name="description" column="description"/>
-        <set name="groupMembers" cascade="all,delete-orphan" lazy="true">
+        <set name="groupMembers" cascade="all,delete-orphan" lazy="extra">
             <key column="group_id" not-null="true"/>
             <one-to-many class="GroupMember"/>
+            <filter name="byGroup" condition="type = :type"/>
         </set>
         <property name="name" column="name"/>
         <component name="tenantId" class="TenantId">
@@ -111,4 +111,8 @@
             <property name="id" column="tenant_id"/>
         </component>
     </class>
+
+    <filter-def name="byGroup">
+        <filter-param name="type" type="java.lang.String"/>
+    </filter-def>
 </hibernate-mapping>

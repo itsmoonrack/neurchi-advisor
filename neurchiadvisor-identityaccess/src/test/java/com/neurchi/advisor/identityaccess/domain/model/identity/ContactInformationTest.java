@@ -18,7 +18,7 @@ public class ContactInformationTest extends IdentityAccessTest {
     @Test
     public void TestChangeEmailAddress() {
         ContactInformation contactInformation = this.contactInformation();
-        ContactInformation contactInformationCopy = new ContactInformation(contactInformation);
+        ContactInformation contactInformationCopy = new ContactInformation(contactInformation.emailAddress());
 
         ContactInformation contactInformation2 =
                 contactInformation

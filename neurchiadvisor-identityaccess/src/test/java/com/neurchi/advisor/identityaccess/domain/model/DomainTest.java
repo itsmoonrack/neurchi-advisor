@@ -12,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith({SpringExtension.class})
-@ContextConfiguration(locations = {
+@ContextConfiguration({
         "classpath:application-context-common.xml",
         "classpath:application-context-identityaccess.xml"})
 public abstract class DomainTest {

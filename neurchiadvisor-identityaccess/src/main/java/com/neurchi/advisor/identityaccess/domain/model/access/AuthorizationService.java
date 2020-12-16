@@ -5,18 +5,18 @@ import com.neurchi.advisor.identityaccess.domain.model.identity.*;
 
 public final class AuthorizationService extends AssertionConcern {
 
-    private GroupRepository groupRepository;
-    private RoleRepository roleRepository;
-    private UserRepository userRepository;
+    private final GroupRepository groupRepository;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     public AuthorizationService(
-            UserRepository aUserRepository,
-            GroupRepository aGroupRepository,
-            RoleRepository aRoleRepository) {
+            final UserRepository userRepository,
+            final GroupRepository groupRepository,
+            final RoleRepository roleRepository) {
 
-        this.groupRepository = aGroupRepository;
-        this.roleRepository = aRoleRepository;
-        this.userRepository = aUserRepository;
+        this.groupRepository = groupRepository;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
     }
 
     public boolean isUserInRole(final TenantId tenantId, final String username, final String roleName) {

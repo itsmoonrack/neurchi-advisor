@@ -18,7 +18,7 @@ public class GroupRepositoryTest extends IdentityAccessTest {
         groupA.addUser(user);
         groupRepository().add(groupA);
 
-        assertEquals(1, groupA.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
         assertTrue(groupA.isMember(user, groupMemberService()));
 
         userRepository().remove(user);
@@ -31,7 +31,7 @@ public class GroupRepositoryTest extends IdentityAccessTest {
 
         assertNotNull(reGrouped);
         assertEquals("GroupA", reGrouped.name());
-        assertEquals(1, reGrouped.groupMembers().count());
+        assertEquals(1, reGrouped.groupMembers().size());
         assertFalse(reGrouped.isMember(user, groupMemberService()));
     }
 

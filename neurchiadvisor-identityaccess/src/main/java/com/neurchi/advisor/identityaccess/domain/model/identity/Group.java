@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 public class Group extends ConcurrencySafeEntity {
 
@@ -31,7 +30,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), group.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentFalse(groupMemberService.isMemberGroup(group, toGroupMember()), "Group recursion.");
 
-        if (this.groupMembers.add(group.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().add(group.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupAdded(
@@ -46,7 +45,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), user.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(user.isEnabled(), "User is not enabled.");
 
-        if (this.groupMembers.add(user.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().add(user.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserAdded(
@@ -66,7 +65,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), user.tenantId(), "Wrong tenant for this group.");
         this.assertArgumentTrue(user.isEnabled(), "User is not enabled.");
 
-        boolean isMember = this.groupMembers.contains(user.toGroupMember());
+        boolean isMember = this.groupMembers().contains(user.toGroupMember());
 
         if (isMember) {
             isMember = groupMemberService.confirmUser(this, user);
@@ -94,7 +93,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), group.tenantId(), "Wrong tenant for this group.");
 
         // Not a nested remove, only direct member.
-        if (this.groupMembers.remove(group.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().remove(group.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupGroupRemoved(
@@ -109,7 +108,7 @@ public class Group extends ConcurrencySafeEntity {
         this.assertArgumentEquals(this.tenantId(), user.tenantId(), "Wrong tenant for this group.");
 
         // Not a nested remove, only direct member.
-        if (this.groupMembers.remove(user.toGroupMember()) && !this.isInternalGroup()) {
+        if (this.groupMembers().remove(user.toGroupMember()) && !this.isInternalGroup()) {
             DomainEventPublisher
                     .instance()
                     .publish(new GroupUserRemoved(
@@ -119,8 +118,8 @@ public class Group extends ConcurrencySafeEntity {
         }
     }
 
-    public Stream<GroupMember> groupMembers() {
-        return groupMembers.stream();
+    public Set<GroupMember> groupMembers() {
+        return this.groupMembers;
     }
 
     protected void setTenantId(final TenantId tenantId) {

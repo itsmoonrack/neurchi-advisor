@@ -3,16 +3,14 @@ package com.neurchi.advisor.identityaccess.domain.model.identity;
 import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
 import com.neurchi.advisor.identityaccess.domain.model.access.Role;
 import com.neurchi.advisor.identityaccess.domain.model.access.RoleRepository;
-import org.springframework.stereotype.Service;
 
-@Service
 public class TenantProvisioningService {
 
     private final RoleRepository roleRepository;
     private final TenantRepository tenantRepository;
     private final UserRepository userRepository;
 
-    TenantProvisioningService(
+    public TenantProvisioningService(
             final TenantRepository tenantRepository,
             final UserRepository userRepository,
             final RoleRepository roleRepository) {

@@ -13,10 +13,6 @@ public final class ContactInformation extends AssertionConcern {
         this.setEmailAddress(emailAddress);
     }
 
-    public ContactInformation(final ContactInformation contactInformation) {
-        this(contactInformation.emailAddress());
-    }
-
     public ContactInformation changeEmailAddress(final EmailAddress emailAddress) {
         return new ContactInformation(emailAddress);
     }

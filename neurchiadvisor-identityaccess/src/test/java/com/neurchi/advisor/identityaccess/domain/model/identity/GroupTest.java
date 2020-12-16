@@ -55,8 +55,8 @@ public class GroupTest extends IdentityAccessTest {
 
         groupA.addGroup(groupB, this.groupMemberService());
 
-        assertEquals(1, groupA.groupMembers().count());
-        assertEquals(0, groupB.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
+        assertEquals(0, groupB.groupMembers().size());
         assertEquals(1, groupGroupAddedCount);
     }
 
@@ -84,7 +84,7 @@ public class GroupTest extends IdentityAccessTest {
         groupA.addUser(user);
         groupRepository().add(groupA);
 
-        assertEquals(1, groupA.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
         assertTrue(groupA.isMember(user, groupMemberService()));
         assertEquals(1, groupUserAddedCount);
     }
@@ -113,9 +113,9 @@ public class GroupTest extends IdentityAccessTest {
         groupRepository().add(groupB);
         groupA.addGroup(groupB, groupMemberService());
 
-        assertEquals(1, groupA.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
         groupA.removeGroup(groupB);
-        assertEquals(0, groupA.groupMembers().count());
+        assertEquals(0, groupA.groupMembers().size());
         assertEquals(1, groupGroupRemovedCount);
     }
 
@@ -143,9 +143,9 @@ public class GroupTest extends IdentityAccessTest {
         groupA.addUser(user);
         groupRepository().add(groupA);
 
-        assertEquals(1, groupA.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
         groupA.removeUser(user);
-        assertEquals(0, groupA.groupMembers().count());
+        assertEquals(0, groupA.groupMembers().size());
         assertEquals(1, groupUserRemovedCount);
     }
 
@@ -158,7 +158,7 @@ public class GroupTest extends IdentityAccessTest {
         groupA.addUser(user);
         groupRepository().add(groupA);
 
-        assertEquals(1, groupA.groupMembers().count());
+        assertEquals(1, groupA.groupMembers().size());
         assertTrue(groupA.isMember(user, groupMemberService()));
 
         userRepository().remove(user);
@@ -171,7 +171,7 @@ public class GroupTest extends IdentityAccessTest {
 
         assertNotNull(reGrouped);
         assertEquals("GroupA", reGrouped.name());
-        assertEquals(1, reGrouped.groupMembers().count());
+        assertEquals(1, reGrouped.groupMembers().size());
         assertFalse(reGrouped.isMember(user, groupMemberService()));
     }
 

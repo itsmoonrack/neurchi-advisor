@@ -2,6 +2,7 @@ package com.neurchi.advisor.identityaccess.infrastructure.persistence;
 
 import com.neurchi.advisor.common.port.adapter.persistence.hibernate.AbstractHibernateSession;
 import com.neurchi.advisor.identityaccess.domain.model.identity.Group;
+import com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberType;
 import com.neurchi.advisor.identityaccess.domain.model.identity.GroupRepository;
 import com.neurchi.advisor.identityaccess.domain.model.identity.TenantId;
 import org.hibernate.exception.ConstraintViolationException;
@@ -25,6 +26,9 @@ public class HibernateGroupRepository extends AbstractHibernateSession implement
 
     @Override
     public Stream<Group> allGroups(final TenantId tenantId) {
+        // ensures for each operation on groupMembers() are filtered to Group only.
+        this.session().enableFilter("byGroup").setParameter("type", GroupMemberType.Group.name());
+
         Query<Group> query = this.session()
                 .createQuery("from Group where tenantId = ?1 and name not like ?2", Group.class);
 
@@ -39,6 +43,9 @@ public class HibernateGroupRepository extends AbstractHibernateSession implement
         if (groupName.startsWith(Group.ROLE_GROUP_PREFIX)) {
             throw new IllegalArgumentException("May not find internal group.");
         }
+
+        // ensures for each operation on groupMembers() are filtered to Group only.
+        this.session().enableFilter("byGroup").setParameter("type", GroupMemberType.Group.name());
 
         Query<Group> query = this.session()
                 .createQuery("from Group where tenantId = ?1 and name = ?2", Group.class);

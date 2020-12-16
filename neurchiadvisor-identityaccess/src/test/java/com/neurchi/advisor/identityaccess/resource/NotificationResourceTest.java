@@ -5,6 +5,7 @@ import com.neurchi.advisor.common.notification.NotificationLog;
 import com.neurchi.advisor.common.notification.NotificationLogReader;
 import com.neurchi.advisor.common.notification.NotificationReader;
 import com.neurchi.advisor.identityaccess.application.command.ChangeContactInfoCommand;
+import com.neurchi.advisor.identityaccess.application.command.ProvisionTenantCommand;
 import com.neurchi.advisor.identityaccess.application.command.RegisterUserCommand;
 import com.neurchi.advisor.identityaccess.domain.model.identity.*;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -95,6 +97,28 @@ public class NotificationResourceTest extends ResourceTest {
         }
 
         assertTrue(found);
+    }
+
+    @Test
+    public void TestTenantProvisionedNotification() {
+        Tenant newTenant =
+                this
+                    .identityApplicationService()
+                    .provisionTenant(
+                            new ProvisionTenantCommand(
+                                    "298448690577160",
+                                    "Neurchi de Finances: The Bottom Fishing Club",
+                                    "10157329112631392",
+                                    "Sylvain",
+                                    "Bernard",
+                                    "access-token",
+                                    "bearer",
+                                    LocalDateTime.now().plusDays(90),
+                                    "sylvain@neurchiadvisor.com"));
+
+        assertNotNull(newTenant);
+
+
     }
 
     private void generateUserEvents() {
