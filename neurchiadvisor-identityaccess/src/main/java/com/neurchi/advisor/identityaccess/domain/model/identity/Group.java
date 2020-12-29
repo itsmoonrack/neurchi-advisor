@@ -141,13 +141,10 @@ public class Group extends ConcurrencySafeEntity {
     }
 
     protected GroupMember toGroupMember() {
-        GroupMember groupMember =
-                new GroupMember(
-                        this.tenantId(),
-                        this.name(),
-                        GroupMemberType.Group);
-
-        return groupMember;
+        return new GroupMember(
+                this.tenantId(),
+                this.name(),
+                GroupMemberType.Group);
     }
 
     protected void setName(final String name) {

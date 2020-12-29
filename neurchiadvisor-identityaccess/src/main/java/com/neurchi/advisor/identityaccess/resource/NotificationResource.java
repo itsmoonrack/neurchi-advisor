@@ -1,8 +1,6 @@
 package com.neurchi.advisor.identityaccess.resource;
 
-import com.neurchi.advisor.common.media.NeurchiAdvisorMediaType;
 import com.neurchi.advisor.common.notification.NotificationLog;
-import com.neurchi.advisor.common.serializer.ObjectSerializer;
 import com.neurchi.advisor.identityaccess.application.representation.NotificationLogRepresentation;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
@@ -14,19 +12,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
+import static com.neurchi.advisor.common.media.NeurchiAdvisorMediaType.ID_ADVISOR_TYPE_JSON;
+import static com.neurchi.advisor.common.media.NeurchiAdvisorMediaType.ID_ADVISOR_TYPE_XML;
 import static java.util.concurrent.TimeUnit.HOURS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Controller
-@RequestMapping("/notifications")
+@RequestMapping(value = "/notifications", produces = {ID_ADVISOR_TYPE_JSON, ID_ADVISOR_TYPE_XML})
 public class NotificationResource extends AbstractResource {
 
-    @GetMapping(produces = NeurchiAdvisorMediaType.ID_NEURCHI_TYPE)
-    public ResponseEntity<StreamingResponseBody> getCurrentNotificationLog() {
+    @GetMapping
+    public ResponseEntity<NotificationLogRepresentation> getCurrentNotificationLog() {
 
         NotificationLog currentNotificationLog =
                 this.notificationApplicationService()
@@ -39,8 +38,8 @@ public class NotificationResource extends AbstractResource {
         return this.currentNotificationLogResponse(currentNotificationLog);
     }
 
-    @GetMapping(path = "{notificationId}", produces = NeurchiAdvisorMediaType.ID_NEURCHI_TYPE)
-    public ResponseEntity<StreamingResponseBody> getNotificationLog(
+    @GetMapping(path = "{notificationId}")
+    public ResponseEntity<NotificationLogRepresentation> getNotificationLog(
             final @PathVariable String notificationId) {
 
         NotificationLog notificationLog =
@@ -54,7 +53,7 @@ public class NotificationResource extends AbstractResource {
         return this.notificationLogResponse(notificationLog);
     }
 
-    private ResponseEntity<StreamingResponseBody> currentNotificationLogResponse(
+    private ResponseEntity<NotificationLogRepresentation> currentNotificationLogResponse(
             final NotificationLog currentNotificationLog) {
 
         NotificationLogRepresentation log =
@@ -72,10 +71,10 @@ public class NotificationResource extends AbstractResource {
                 .ok()
                 .headers(httpHeaders)
                 .cacheControl(CacheControl.maxAge(1, MINUTES))
-                .body(response -> ObjectSerializer.instance().serialize(response, log));
+                .body(log);
     }
 
-    private ResponseEntity<StreamingResponseBody> notificationLogResponse(
+    private ResponseEntity<NotificationLogRepresentation> notificationLogResponse(
             final NotificationLog notificationLog) {
 
         NotificationLogRepresentation log =
@@ -97,7 +96,7 @@ public class NotificationResource extends AbstractResource {
                 .ok()
                 .headers(httpHeaders)
                 .cacheControl(CacheControl.maxAge(1, HOURS))
-                .body(response -> ObjectSerializer.instance().serialize(response, log));
+                .body(log);
     }
 
     private Link linkFor(

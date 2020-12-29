@@ -1,4 +1,20 @@
 package com.neurchi.advisor.common.notification;
 
-record NotificationLogInfo(NotificationLogId notificationLogId, long totalLogged) {
+class NotificationLogInfo {
+
+    private NotificationLogId notificationLogId;
+    private long totalLogged;
+
+    NotificationLogInfo(final NotificationLogId notificationLogId, final long totalLogged) {
+        this.notificationLogId = notificationLogId;
+        this.totalLogged = totalLogged;
+    }
+
+    public NotificationLogId notificationLogId() {
+        return this.notificationLogId;
+    }
+
+    public long totalLogged() {
+        return this.totalLogged;
+    }
 }

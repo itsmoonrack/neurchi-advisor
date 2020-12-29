@@ -61,6 +61,33 @@ public class GroupTest extends IdentityAccessTest {
     }
 
     @Test
+    public void TestRequests() {
+        TenantId tenantId = new TenantId("FE46D323-612F-41ED-A012-21243525B3B8");
+        Tenant tenant = this.tenantRepository().tenantOfId(tenantId).orElseThrow();
+
+//        RegistrationInvitation registrationInvitation =
+//                this.registrationInvitationEntity(tenant);
+//
+//        User user = tenant.registerUser(
+//                registrationInvitation.invitationId(),
+//                "rgerault",
+//                new AccessToken("token", "bearer", LocalDateTime.now().plusDays(90)),
+//                Enablement.indefiniteEnablement(),
+//                this.personEntity(tenant)).orElseThrow();
+//
+//        this.userRepository().add(user);
+//
+//        tenant.withdrawInvitation(registrationInvitation.invitationId());
+
+        User user = this.userRepository().userWithUsername(tenantId, "nberjaud").orElseThrow();
+
+        Group group = this.groupRepository().groupNamed(tenantId, "GroupA").orElseThrow();
+        group.addUser(user);
+        Group groupB = this.groupRepository().groupNamed(tenantId, "GroupB").orElseThrow();
+        group.addGroup(groupB, this.groupMemberService());
+    }
+
+    @Test
     public void TestAddUser() {
 
         DomainEventPublisher

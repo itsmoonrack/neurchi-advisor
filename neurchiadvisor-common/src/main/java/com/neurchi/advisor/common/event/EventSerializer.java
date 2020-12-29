@@ -16,16 +16,15 @@ public final class EventSerializer extends AbstractSerializer {
         if (EventSerializer.eventSerializer == null) {
             EventSerializer.eventSerializer = new EventSerializer();
         }
-
         return EventSerializer.eventSerializer;
     }
 
     public EventSerializer(final boolean isCompact) {
-        this(false, isCompact);
+        this(isCompact, false);
     }
 
-    public EventSerializer(boolean isPretty, boolean isCompact) {
-        super(isPretty, isCompact);
+    public EventSerializer(boolean isCompact, boolean isPretty) {
+        super(isCompact, isPretty);
     }
 
     public String serialize(final DomainEvent domainEvent) {

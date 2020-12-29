@@ -8,7 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 
 @SpringBootTest(classes = IdentityAccessApplicationTestContext.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public abstract class ResourceTest extends ApplicationServiceTest {
+abstract class ResourceTest extends ApplicationServiceTest {
 
     @LocalServerPort
     private int port;

@@ -4,8 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
-
-
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -46,6 +44,12 @@
         <constructor-arg index="1" ref="publishedNotificationTrackerStore"/>
         <constructor-arg index="2" value="neurchiAdvisorIdentityAccess"/>
     </bean>
+
+    <bean id="notificationSerializer" class="com.neurchi.advisor.common.notification.NotificationSerializer" factory-method="instance"/>
+
+<!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" factory-bean="notificationSerializer" factory-method="objectMapper" primary="true"/>-->
+
+<!--    <bean id="mapperBuilder" class="org.springframework.http.converter.json.Jackson2ObjectMapperBuilder" factory-bean="notificationSerializer" factory-method="mapperBuilder"/>-->
 
     <bean id="publishedNotificationTrackerStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore"/>
 

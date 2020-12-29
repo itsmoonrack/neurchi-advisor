@@ -36,7 +36,9 @@ public abstract class DomainTest {
     @AfterEach
     protected void tearDown() {
 
-        this.transaction().rollback();
+//        this.transaction().rollback();
+
+        this.transaction().commit();
 
         this.setTransaction(null);
 

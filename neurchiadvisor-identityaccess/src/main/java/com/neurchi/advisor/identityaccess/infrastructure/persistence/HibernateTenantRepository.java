@@ -40,7 +40,7 @@ public class HibernateTenantRepository extends AbstractHibernateSession implemen
 
     @Override
     public void remove(final Tenant tenant) {
-
+        this.session().delete(tenant);
     }
 
     @Override

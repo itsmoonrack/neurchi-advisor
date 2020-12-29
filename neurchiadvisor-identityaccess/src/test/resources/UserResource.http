@@ -1,0 +1,7 @@
+GET  http://localhost:8081/tenants/B0058877-E21D-4F6E-8BA1-7889556D320B/users/sbernard/inRole/Administrator
+Accept: application/*+json
+
+###
+
+GET  http://localhost:8081/tenants/B0058877-E21D-4F6E-8BA1-7889556D320B/users/sbernard/inRole/Administrator
+Accept: application/*+xml

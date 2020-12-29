@@ -4,9 +4,6 @@ import com.neurchi.advisor.identityaccess.application.AccessApplicationService;
 import com.neurchi.advisor.identityaccess.application.IdentityApplicationService;
 import com.neurchi.advisor.identityaccess.application.NotificationApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
-
-import java.time.Duration;
 
 public class AbstractResource {
 
@@ -16,10 +13,6 @@ public class AbstractResource {
     private IdentityApplicationService identityApplicationService;
     @Autowired
     private NotificationApplicationService notificationApplicationService;
-
-    protected CacheControl cacheControlFor(final Duration duration) {
-        return CacheControl.maxAge(duration);
-    }
 
     protected AccessApplicationService accessApplicationService() {
         return this.accessApplicationService;

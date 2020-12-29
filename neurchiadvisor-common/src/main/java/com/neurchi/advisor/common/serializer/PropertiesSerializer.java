@@ -18,11 +18,11 @@ public final class PropertiesSerializer extends AbstractSerializer {
     }
 
     public PropertiesSerializer(boolean isCompact) {
-        this(false, isCompact);
+        this(isCompact, false);
     }
 
-    public PropertiesSerializer(boolean isPretty, boolean isCompact) {
-        super(isPretty, isCompact);
+    public PropertiesSerializer(boolean isCompact, boolean isPretty) {
+        super(isCompact, isPretty);
     }
 
     public String serialize(final Properties properties) {

@@ -1,7 +1,21 @@
 package com.neurchi.advisor.identityaccess.resource;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
 import com.neurchi.advisor.common.notification.NotificationLog;
+import com.neurchi.advisor.common.notification.NotificationLogFactory;
 import com.neurchi.advisor.common.notification.NotificationLogReader;
 import com.neurchi.advisor.common.notification.NotificationReader;
 import com.neurchi.advisor.identityaccess.application.command.ChangeContactInfoCommand;
@@ -20,7 +34,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class NotificationResourceTest extends ResourceTest {
+class NotificationResourceTest extends ResourceTest {
 
     @Test
     public void TestBasicNotificationLog() throws Exception {
@@ -187,6 +201,38 @@ public class NotificationResourceTest extends ResourceTest {
         }
 
         assertTrue(count >= 1);
+    }
+
+    @Test
+    public void TestXMLRepresentation() throws Exception {
+
+        this.generateUserEvents();
+
+        SimpleModule module = new SimpleModule("NotificationSerializer", new Version(1, 0, 0, "alpha"));
+//        module.addSerializer(new NotificationSerializer());
+
+        ObjectMapper objectMapper = new XmlMapper();
+        objectMapper.registerModule(module);
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                .setVisibility(PropertyAccessor.CREATOR, JsonAutoDetect.Visibility.ANY)
+                .setSerializationInclusion(JsonInclude.Include.NON_ABSENT)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES, false)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .deactivateDefaultTyping()
+                .registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES))
+                .registerModule(new JavaTimeModule())
+                .registerModule(new Jdk8Module());
+
+        NotificationLogFactory factory = new NotificationLogFactory(this.eventStore);
+
+        NotificationLog log = factory.createCurrentNotificationLog();
+
+        String serializedLog = objectMapper.writeValueAsString(log);
+
+        System.out.println(serializedLog);
     }
 
     private void generateUserEvents() {

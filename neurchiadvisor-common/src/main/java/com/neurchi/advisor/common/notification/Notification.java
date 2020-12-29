@@ -62,13 +62,13 @@ public final class Notification extends AssertionConcern implements Serializable
 
     @Override
     public String toString() {
-        return "Notification{" +
+        return "Notification[" +
                 "event=" + event +
                 ", notificationId=" + notificationId +
                 ", occurredOn=" + occurredOn +
                 ", typeName='" + typeName + '\'' +
                 ", version=" + version +
-                '}';
+                ']';
     }
 
     protected Notification() {

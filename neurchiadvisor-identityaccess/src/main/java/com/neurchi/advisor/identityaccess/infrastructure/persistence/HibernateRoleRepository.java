@@ -35,7 +35,7 @@ public class HibernateRoleRepository extends AbstractHibernateSession implements
 
     @Override
     public void remove(final Role role) {
-
+        this.session().delete(role);
     }
 
     @Override

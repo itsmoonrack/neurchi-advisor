@@ -10,9 +10,21 @@
         </id>
         <version name="concurrencyVersion" column="concurrency_version"/>
         <property name="description" column="description"/>
-        <set name="groupMembers" cascade="all,delete-orphan" lazy="extra">
+        <set name="groupMembers" cascade="all,delete-orphan" lazy="extra" table="table_group_member"
+             collection-type="com.neurchi.advisor.identityaccess.infrastructure.persistence.HibernateGroupRepository$GroupMembers">
             <key column="group_id" not-null="true"/>
-            <one-to-many class="GroupMember"/>
+            <composite-element class="GroupMember">
+                <property name="name" column="name" not-null="true"/>
+                <nested-composite-element name="tenantId" class="TenantId">
+                    <property name="id" column="tenant_id" not-null="true"/>
+                </nested-composite-element>
+                <property name="type" column="type" not-null="true">
+                    <type name="org.hibernate.type.EnumType">
+                        <param name="enumClass">com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberType</param>
+                        <param name="useNamed">true</param>
+                    </type>
+                </property>
+            </composite-element>
             <filter name="byGroup" condition="type = :type"/>
         </set>
         <property name="name" column="name"/>
@@ -21,21 +33,23 @@
         </component>
     </class>
 
-    <class name="GroupMember" table="table_group_member" lazy="true">
-        <id name="id" column="id" unsaved-value="-1">
-            <generator class="native"/>
-        </id>
-        <property name="name" column="name"/>
-        <component name="tenantId" class="TenantId">
-            <property name="id" column="tenant_id"/>
-        </component>
-        <property name="type" column="type">
-            <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberType</param>
-                <param name="useNamed">true</param>
-            </type>
-        </property>
-    </class>
+<!--    <class name="GroupMember" table="table_group_member" lazy="true">-->
+<!--&lt;!&ndash;        <id name="id" column="id" unsaved-value="-1">&ndash;&gt;-->
+<!--&lt;!&ndash;            <generator class="native"/>&ndash;&gt;-->
+<!--&lt;!&ndash;        </id>&ndash;&gt;-->
+<!--        <natural-id>-->
+<!--            <property name="name" column="name"/>-->
+<!--            <component name="tenantId" class="TenantId">-->
+<!--                <property name="id" column="tenant_id"/>-->
+<!--            </component>-->
+<!--            <property name="type" column="type">-->
+<!--                <type name="org.hibernate.type.EnumType">-->
+<!--                    <param name="enumClass">com.neurchi.advisor.identityaccess.domain.model.identity.GroupMemberType</param>-->
+<!--                    <param name="useNamed">true</param>-->
+<!--                </type>-->
+<!--            </property>-->
+<!--        </natural-id>-->
+<!--    </class>-->
 
     <class name="Person" table="table_person" lazy="true">
         <id name="id" column="id" unsaved-value="-1">

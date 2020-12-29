@@ -1,7 +1,9 @@
 package com.neurchi.advisor.identityaccess.application.representation;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.neurchi.advisor.identityaccess.domain.model.identity.User;
 
+@JacksonXmlRootElement(localName = "User")
 public class UserRepresentation {
 
     private final String emailAddress;
