@@ -31,12 +31,12 @@ public class RabbitMQNotificationPublisher implements NotificationPublisher {
     @Override
     public void publishNotifications() {
         PublishedNotificationTracker publishedNotificationTracker =
-                this.publishedNotificationTrackerStore().publishedNotificationTracker();
+                this.publishedNotificationTrackerStore()
+                        .publishedNotificationTracker();
 
         List<Notification> notifications =
-                this.unpublishedNotifications(
-                        publishedNotificationTracker.mostRecentPublishedNotificationId())
-                .collect(Collectors.toList());
+                this.unpublishedNotifications(publishedNotificationTracker.mostRecentPublishedNotificationId())
+                        .collect(Collectors.toList());
 
         try (MessageProducer messageProducer = this.messageProducer()) {
             notifications.forEach(notification -> this.publish(notification, messageProducer));

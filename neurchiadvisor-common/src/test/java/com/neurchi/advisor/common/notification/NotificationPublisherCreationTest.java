@@ -20,9 +20,7 @@ class NotificationPublisherCreationTest extends CommonTestCase {
         assertNotNull(eventStore);
 
         PublishedNotificationTrackerStore publishedNotificationTrackerStore =
-                new HibernatePublishedNotificationTrackerStore(
-                        new PersistenceManagerProvider(this.session()),
-                        "unit.test");
+                new HibernatePublishedNotificationTrackerStore("unit.test");
 
         NotificationPublisher notificationPublisher =
                 new RabbitMQNotificationPublisher(

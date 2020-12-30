@@ -3,7 +3,6 @@
 
 <hibernate-mapping default-access="field" default-cascade="all">
     <class name="com.neurchi.advisor.common.notification.PublishedNotificationTracker" table="table_published_notification_tracker" lazy="true">
-        <cache usage="read-write"/>
         <id name="publishedNotificationTrackerId" type="long" column="published_notification_tracker_id" unsaved-value="-1">
 	        <generator class="native"/>
         </id>

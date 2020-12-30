@@ -2,28 +2,34 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context.xsd">
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
 
-<!--    <security:http auto-config="true">-->
-<!--        <security:csrf disabled="true"/>-->
+    <task:annotation-driven/>
 
-<!--        <security:intercept-url pattern="/" access="permitAll"/>-->
+    <!--    <security:http auto-config="true">-->
+    <!--        <security:csrf disabled="true"/>-->
 
-<!--        <security:logout logout-url="/logout"/>-->
-<!--    </security:http>-->
+    <!--        <security:intercept-url pattern="/" access="permitAll"/>-->
 
-<!--    <security:global-method-security pre-post-annotations="enabled"/>-->
+    <!--        <security:logout logout-url="/logout"/>-->
+    <!--    </security:http>-->
 
-<!--    <security:authentication-manager>-->
-<!--        <security:authentication-provider user-service-ref="memoryUserDetailsManager"/>-->
-<!--    </security:authentication-manager>-->
+    <!--    <security:global-method-security pre-post-annotations="enabled"/>-->
 
-<!--    <security:user-service id="memoryUserDetailsManager">-->
-<!--        <security:user name="admin" authorities="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
-<!--    </security:user-service>-->
+    <!--    <security:authentication-manager>-->
+    <!--        <security:authentication-provider user-service-ref="memoryUserDetailsManager"/>-->
+    <!--    </security:authentication-manager>-->
+
+    <!--    <security:user-service id="memoryUserDetailsManager">-->
+    <!--        <security:user name="admin" authorities="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
+    <!--    </security:user-service>-->
 
     <bean id="accessApplicationService" class="com.neurchi.advisor.identityaccess.application.AccessApplicationService"/>
 
@@ -36,7 +42,7 @@
     <bean id="identityApplicationService" class="com.neurchi.advisor.identityaccess.application.IdentityApplicationService"/>
 
     <bean id="notificationApplicationService" class="com.neurchi.advisor.identityaccess.application.NotificationApplicationService"/>
-    
+
     <bean id="notificationPublisher" class="com.neurchi.advisor.common.port.adapter.notification.RabbitMQNotificationPublisher">
         <constructor-arg index="0" ref="eventStore"/>
         <constructor-arg index="1" ref="publishedNotificationTrackerStore"/>
@@ -55,7 +61,9 @@
         <constructor-arg name="objectMapper" ref="xmlMapper"/>
     </bean>
 
-    <bean id="publishedNotificationTrackerStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore"/>
+    <bean id="publishedNotificationTrackerStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore">
+        <constructor-arg value="neurchiAdvisorIdentityAccess"/>
+    </bean>
 
     <context:component-scan base-package="com.neurchi.advisor.identityaccess.resource"/>
 </beans>

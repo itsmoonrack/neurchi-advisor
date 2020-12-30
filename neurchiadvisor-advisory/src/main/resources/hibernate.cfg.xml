@@ -6,6 +6,6 @@
 
         <mapping resource="hibernate/com.neurchi.advisor.advisory.domain.model.group.hbm.xml"/>
         <mapping resource="hibernate/com.neurchi.advisor.advisory.domain.model.team.hbm.xml"/>
-        <mapping resource="TimeConstrainedProcessTracker.hbm.xml"/>
+        <mapping resource="hibernate/TimeConstrainedProcessTracker.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

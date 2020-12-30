@@ -6,6 +6,7 @@ import com.neurchi.advisor.common.notification.NotificationLogFactory;
 import com.neurchi.advisor.common.notification.NotificationLogId;
 import com.neurchi.advisor.common.notification.NotificationPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 public class NotificationApplicationService {
@@ -30,6 +31,7 @@ public class NotificationApplicationService {
     }
 
     @Transactional
+    @Scheduled(fixedDelay = 1000)
     public void publishNotifications() {
         this.notificationPublisher().publishNotifications();
     }
