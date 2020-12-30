@@ -21,7 +21,6 @@ public class HibernatePublishedNotificationTrackerStore
             throw new IllegalArgumentException("The PersistenceManagerProvider must have a Hibernate Session.");
         }
 
-        this.setSession(persistenceManagerProvider.hibernateSession());
         this.setTypeName(typeName);
     }
 

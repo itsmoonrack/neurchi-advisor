@@ -31,9 +31,7 @@
         <constructor-arg type="com.neurchi.advisor.common.event.EventStore" ref="eventStore"/>
     </bean>
 
-    <bean id="eventStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernateEventStore">
-        <property name="sessionProvider" ref="sessionProvider"/>
-    </bean>
+    <bean id="eventStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernateEventStore"/>
 
     <bean id="identityApplicationService" class="com.neurchi.advisor.identityaccess.application.IdentityApplicationService"/>
 

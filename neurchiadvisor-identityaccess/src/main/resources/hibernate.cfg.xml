@@ -9,6 +9,9 @@
         <property name="hibernate.connection.password">neurchi</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
+<!--        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.jcache.internal.JCacheRegionFactory</property>-->
+<!--        <property name="hibernate.javax.cache.provider">org.ehcache.jsr107.EhcacheCachingProvider</property>-->
+
         <mapping resource="hibernate/com.neurchi.advisor.identityaccess.domain.model.access.hbm.xml"/>
         <mapping resource="hibernate/com.neurchi.advisor.identityaccess.domain.model.identity.hbm.xml"/>
         <mapping resource="hibernate/PublishedNotificationTracker.hbm.xml"/>

@@ -1,11 +1,13 @@
 package com.neurchi.advisor.identityaccess.resource;
 
+import com.neurchi.advisor.identityaccess.application.command.AssignUserToRoleCommand;
 import com.neurchi.advisor.identityaccess.application.representation.UserInRoleRepresentation;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import static com.neurchi.advisor.common.media.NeurchiAdvisorMediaType.ID_ADVISOR_TYPE_JSON;
@@ -33,5 +35,21 @@ public class UserResource extends AbstractResource {
         } catch (Exception e) {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @PostMapping(path = "{username}/inRole/{roleName}")
+    public ResponseEntity<UserInRoleRepresentation> assignUserToRole(
+            @PathVariable final String tenantId,
+            @PathVariable final String username,
+            @PathVariable final String roleName) {
+
+        this.accessApplicationService()
+                .assignUserToRole(
+                        new AssignUserToRoleCommand(
+                                tenantId,
+                                username,
+                                roleName));
+
+        return ResponseEntity.noContent().build();
     }
 }

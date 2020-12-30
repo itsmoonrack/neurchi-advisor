@@ -1,7 +1,7 @@
-GET  http://localhost:8081/notifications
+GET  http://localhost:9000/notifications
 Accept: application/*+json
 
 ###
 
-GET  http://localhost:8081/notifications
+GET  http://localhost:9000/notifications
 Accept: application/*+xml

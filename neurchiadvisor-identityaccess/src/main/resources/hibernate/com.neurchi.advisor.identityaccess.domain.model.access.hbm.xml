@@ -5,16 +5,19 @@
 
 <hibernate-mapping default-access="field" default-cascade="all" package="com.neurchi.advisor.identityaccess.domain.model.access">
     <class name="Role" table="table_role" lazy="true">
+        <cache usage="read-write"/>
         <id name="id" column="id" unsaved-value="-1">
             <generator class="native"/>
         </id>
+        <natural-id>
+            <component name="tenantId" class="com.neurchi.advisor.identityaccess.domain.model.identity.TenantId">
+                <property name="id" column="tenant_id"/>
+            </component>
+            <property name="name" column="name"/>
+        </natural-id>
         <version name="concurrencyVersion" column="concurrency_version"/>
         <property name="description" column="description"/>
         <many-to-one name="group" class="com.neurchi.advisor.identityaccess.domain.model.identity.Group" column="group_id"/>
-        <property name="name" column="name"/>
         <property name="supportsNesting" column="supports_nesting"/>
-        <component name="tenantId" class="com.neurchi.advisor.identityaccess.domain.model.identity.TenantId">
-            <property name="id" column="tenant_id"/>
-        </component>
     </class>
 </hibernate-mapping>

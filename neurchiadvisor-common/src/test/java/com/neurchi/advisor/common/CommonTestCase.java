@@ -1,8 +1,8 @@
 package com.neurchi.advisor.common;
 
 import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
-import com.neurchi.advisor.common.spring.SpringHibernateSessionProvider;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,11 +19,11 @@ public abstract class CommonTestCase {
     @Autowired
     protected ApplicationContext applicationContext;
     @Autowired
-    private SpringHibernateSessionProvider sessionProvider;
+    private SessionFactory sessionFactory;
     private Transaction transaction;
 
     protected Session session() {
-        return this.sessionProvider.session();
+        return this.sessionFactory.getCurrentSession();
     }
 
     protected Transaction transaction() {

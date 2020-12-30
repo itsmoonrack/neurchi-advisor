@@ -23,7 +23,7 @@ CREATE TABLE `table_group_member`
     `type`      varchar(5)   NOT NULL,
     `group_id`  bigint       NOT NULL,
     KEY `k_group_id` (`group_id`),
-    KEY `k_tenant_id` (`tenant_id`),
+    UNIQUE KEY `k_group_member` (`name`, `tenant_id`, `type`, `group_id`),
     CONSTRAINT `fk_table_group_member_table_group` FOREIGN KEY (`group_id`) REFERENCES `table_group` (`id`),
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;

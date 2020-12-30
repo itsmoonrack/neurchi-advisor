@@ -1,16 +1,16 @@
 package com.neurchi.advisor.identityaccess.domain.model;
 
 import com.neurchi.advisor.common.domain.model.DomainEventPublisher;
-import com.neurchi.advisor.common.spring.SpringHibernateSessionProvider;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.junit.jupiter.api.AfterEach;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @ExtendWith({SpringExtension.class})
 @ContextConfiguration({
         "classpath:application-context-common.xml",
@@ -18,38 +18,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public abstract class DomainTest {
 
     @Autowired
-    private SpringHibernateSessionProvider sessionProvider;
-    private Transaction transaction;
+    private SessionFactory sessionFactory;
 
     protected Session session() {
-        return this.sessionProvider.session();
+        return this.sessionFactory.getCurrentSession();
     }
 
     @BeforeEach
     protected void setUp() {
-
-        this.setTransaction(this.session().beginTransaction());
-
         DomainEventPublisher.instance().reset();
-    }
-
-    @AfterEach
-    protected void tearDown() {
-
-//        this.transaction().rollback();
-
-        this.transaction().commit();
-
-        this.setTransaction(null);
-
-        this.session().clear();
-    }
-
-    protected Transaction transaction() {
-        return this.transaction;
-    }
-
-    private void setTransaction(final Transaction transaction) {
-        this.transaction = transaction;
     }
 }

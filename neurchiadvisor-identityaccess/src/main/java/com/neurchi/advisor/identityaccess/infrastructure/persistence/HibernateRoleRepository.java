@@ -4,6 +4,7 @@ import com.neurchi.advisor.common.port.adapter.persistence.hibernate.AbstractHib
 import com.neurchi.advisor.identityaccess.domain.model.access.Role;
 import com.neurchi.advisor.identityaccess.domain.model.access.RoleRepository;
 import com.neurchi.advisor.identityaccess.domain.model.identity.TenantId;
+import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
@@ -40,12 +41,11 @@ public class HibernateRoleRepository extends AbstractHibernateSession implements
 
     @Override
     public Optional<Role> roleNamed(final TenantId tenantId, final String roleName) {
-        Query<Role> query = this.session()
-                .createQuery("from Role where tenantId = ?1 and name = ?2", Role.class);
+        NaturalIdLoadAccess<Role> query = this.session()
+                .byNaturalId(Role.class)
+                .using("tenantId", tenantId)
+                .using("name", roleName);
 
-        query.setParameter(1, tenantId);
-        query.setParameter(2, roleName);
-
-        return query.uniqueResultOptional();
+        return query.loadOptional();
     }
 }

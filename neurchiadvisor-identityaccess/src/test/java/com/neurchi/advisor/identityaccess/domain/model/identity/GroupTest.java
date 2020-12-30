@@ -18,6 +18,29 @@ public class GroupTest extends IdentityAccessTest {
     private int groupUserAddedCount;
     private int groupUserRemovedCount;
 
+    public void TestCacheHitData() {
+
+        TenantId tenantId = new TenantId("FE46D323-612F-41ED-A012-21243525B3B8");
+
+        Tenant tenant = tenantRepository().tenantOfId(tenantId).orElseThrow();
+
+        Role role = roleRepository().roleNamed(tenantId, "TestCache").orElseThrow();
+//                tenant.provisionRole("TestCache", "This is a test role.");
+//        roleRepository().add(role);
+
+//        for (int index = 20010; index < 25000; index++) {
+//
+//            User user = userRepository().userWithUsername(tenantId, "test" + index).orElseThrow();
+//
+//            role.assignUser(user);
+//
+//            LoggerFactory.getLogger(GroupTest.class).info("User assigned to role " + user.username());
+//        }
+
+        User user = userRepository().userWithUsername(tenantId, "test10000").orElseThrow();
+        role.unassignUser(user);
+    }
+
     @Test
     public void TestProvisionGroup() {
 
@@ -65,26 +88,33 @@ public class GroupTest extends IdentityAccessTest {
         TenantId tenantId = new TenantId("FE46D323-612F-41ED-A012-21243525B3B8");
         Tenant tenant = this.tenantRepository().tenantOfId(tenantId).orElseThrow();
 
-//        RegistrationInvitation registrationInvitation =
-//                this.registrationInvitationEntity(tenant);
-//
-//        User user = tenant.registerUser(
-//                registrationInvitation.invitationId(),
-//                "rgerault",
-//                new AccessToken("token", "bearer", LocalDateTime.now().plusDays(90)),
-//                Enablement.indefiniteEnablement(),
-//                this.personEntity(tenant)).orElseThrow();
-//
-//        this.userRepository().add(user);
-//
-//        tenant.withdrawInvitation(registrationInvitation.invitationId());
-
-        User user = this.userRepository().userWithUsername(tenantId, "nberjaud").orElseThrow();
-
         Group group = this.groupRepository().groupNamed(tenantId, "GroupA").orElseThrow();
-        group.addUser(user);
-        Group groupB = this.groupRepository().groupNamed(tenantId, "GroupB").orElseThrow();
-        group.addGroup(groupB, this.groupMemberService());
+        User user = this.userRepository().userWithUsername(tenantId, "test11").orElseThrow();
+
+//        for (int index = 10000; index < 100000; index++) {
+//            RegistrationInvitation registrationInvitation =
+//                    this.registrationInvitationEntity(tenant);
+//
+//            User user = tenant.registerUser(
+//                    registrationInvitation.invitationId(),
+//                    "test" + index,
+//                    new AccessToken("token", "bearer", LocalDateTime.now().plusDays(90)),
+//                    Enablement.indefiniteEnablement(),
+//                    this.personEntity(tenant)).orElseThrow();
+//
+//            this.userRepository().add(user);
+//
+//            tenant.withdrawInvitation(registrationInvitation.invitationId());
+//
+////            User user = this.userRepository().userWithUsername(tenantId, "sbernard" + index).orElseThrow();
+//            group.addUser(user);
+//            LoggerFactory.getLogger(GroupTest.class).info("test" + index);
+//        }
+//        Group groupB = this.groupRepository().groupNamed(tenantId, "GroupB").orElseThrow();
+//        group.addGroup(groupB, this.groupMemberService());
+
+//        group.removeUser(user);
+//        group.removeGroup(groupB);
     }
 
     @Test
