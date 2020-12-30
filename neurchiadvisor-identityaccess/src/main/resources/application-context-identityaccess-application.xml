@@ -43,11 +43,17 @@
         <constructor-arg index="2" value="neurchiAdvisorIdentityAccess"/>
     </bean>
 
-    <bean id="notificationSerializer" class="com.neurchi.advisor.common.notification.NotificationSerializer" factory-method="instance"/>
+    <bean id="notificationSerializer" class="com.neurchi.advisor.common.notification.NotificationSerializer" factory-method="instance" primary="true"/>
 
-<!--    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" factory-bean="notificationSerializer" factory-method="objectMapper" primary="true"/>-->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" factory-bean="notificationSerializer" factory-method="objectMapper" primary="true"/>
 
-<!--    <bean id="mapperBuilder" class="org.springframework.http.converter.json.Jackson2ObjectMapperBuilder" factory-bean="notificationSerializer" factory-method="mapperBuilder"/>-->
+    <bean id="notificationXmlSerializer" class="com.neurchi.advisor.common.notification.NotificationSerializer" factory-method="xmlInstance"/>
+
+    <bean id="xmlMapper" class="com.fasterxml.jackson.dataformat.xml.XmlMapper" factory-bean="notificationXmlSerializer" factory-method="objectMapper"/>
+
+    <bean class="org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter">
+        <constructor-arg name="objectMapper" ref="xmlMapper"/>
+    </bean>
 
     <bean id="publishedNotificationTrackerStore" class="com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernatePublishedNotificationTrackerStore"/>
 

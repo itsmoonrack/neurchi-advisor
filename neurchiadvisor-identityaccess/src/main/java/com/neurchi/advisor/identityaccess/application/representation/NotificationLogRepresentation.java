@@ -1,5 +1,6 @@
 package com.neurchi.advisor.identityaccess.application.representation;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.neurchi.advisor.common.notification.Notification;
@@ -14,6 +15,8 @@ public class NotificationLogRepresentation {
     private final boolean archived;
     @JacksonXmlProperty(isAttribute = true)
     private final String id;
+    @JacksonXmlElementWrapper(useWrapping = false)
+    @JacksonXmlProperty(localName = "notification")
     private final Collection<Notification> notifications;
 
     public NotificationLogRepresentation(final NotificationLog log) {

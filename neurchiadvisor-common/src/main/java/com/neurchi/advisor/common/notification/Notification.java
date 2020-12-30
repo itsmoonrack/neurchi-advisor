@@ -1,5 +1,6 @@
 package com.neurchi.advisor.common.notification;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.neurchi.advisor.common.AssertionConcern;
 import com.neurchi.advisor.common.domain.model.DomainEvent;
 
@@ -7,6 +8,7 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+@JsonSerialize
 public final class Notification extends AssertionConcern implements Serializable {
 
     private DomainEvent event;
