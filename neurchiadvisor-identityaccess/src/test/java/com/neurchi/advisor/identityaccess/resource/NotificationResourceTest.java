@@ -256,9 +256,6 @@ class NotificationResourceTest extends ResourceTest {
                                             tenant.tenantId().id(),
                                             invitationId,
                                             FIXTURE_USERNAME + index,
-                                            FIXTURE_ACCESS_TOKEN,
-                                            FIXTURE_TOKEN_TYPE,
-                                            FIXTURE_EXPIRES_IN,
                                             "Sylvain",
                                             "Bernard",
                                             true,
@@ -277,11 +274,11 @@ class NotificationResourceTest extends ResourceTest {
             }
 
             if ((index % 3) == 0) {
-                UserAccessTokenExtended event =
-                        newUserAccessTokenExtended(
+                UserEnablementChanged event =
+                        newUserEnablementChanged(
                                 user.tenantId(),
                                 user.username(),
-                                user.accessToken());
+                                user.enablement().isEnabled());
 
                 this.eventStore.append(event);
             }
@@ -300,11 +297,11 @@ class NotificationResourceTest extends ResourceTest {
         }
     }
 
-    private UserAccessTokenExtended newUserAccessTokenExtended(final TenantId tenantId, final String username, final AccessToken accessToken) {
+    private UserEnablementChanged newUserEnablementChanged(final TenantId tenantId, final String username, final boolean enabled) {
         try {
-            Constructor<UserAccessTokenExtended> constructor = UserAccessTokenExtended.class.getDeclaredConstructor(TenantId.class, String.class, AccessToken.class);
+            Constructor<UserEnablementChanged> constructor = UserEnablementChanged.class.getDeclaredConstructor(TenantId.class, String.class, Enablement.class);
             constructor.setAccessible(true);
-            return constructor.newInstance(tenantId, username, accessToken);
+            return constructor.newInstance(tenantId, username, new Enablement(enabled, LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(1)));
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             return null;
         }

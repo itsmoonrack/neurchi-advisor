@@ -9,7 +9,6 @@ import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.batch.BatchRequest;
 import com.restfb.batch.BatchResponse;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -21,7 +20,7 @@ import java.util.List;
 @Service
 public class GraphUserInRoleAdapter implements UserInRoleAdapter {
 
-    @Value("${security.oauth2.client.client-secret}")
+//    @Value("${security.oauth2.client.client-secret}")
     private String appSecret; // TODO: Move this away
 
     @Override

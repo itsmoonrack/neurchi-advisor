@@ -31,7 +31,7 @@ public class NotificationApplicationService {
     }
 
     @Transactional
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelayString = "PT1S")
     public void publishNotifications() {
         this.notificationPublisher().publishNotifications();
     }

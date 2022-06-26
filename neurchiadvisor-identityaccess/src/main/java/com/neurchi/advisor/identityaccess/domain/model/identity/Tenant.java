@@ -143,7 +143,6 @@ public class Tenant extends ConcurrencySafeEntity {
     public Optional<User> registerUser(
             final String invitationIdentifier,
             final String username,
-            final AccessToken accessToken,
             final Enablement enablement,
             final Person person) {
 
@@ -153,7 +152,7 @@ public class Tenant extends ConcurrencySafeEntity {
             // Ensures same tenant.
             person.setTenantId(this.tenantId());
 
-            return Optional.of(new User(this.tenantId(), username, accessToken, enablement, person));
+            return Optional.of(new User(this.tenantId(), username, enablement, person));
         }
 
         return Optional.empty();

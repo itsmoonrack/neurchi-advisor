@@ -132,7 +132,7 @@ public abstract class AbstractProcess extends Entity implements Process {
     public TimeConstrainedProcessTracker timeConstrainedProcessTracker() {
         this.assertStateTrue(this.canTimeout(), "Process does not timeout.");
 
-        return new TimeConstrainedProcessTracker(
+        return new  TimeConstrainedProcessTracker(
                 this.tenantId(),
                 this.processId(),
                 this.description(),

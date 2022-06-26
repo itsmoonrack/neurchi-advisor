@@ -4,6 +4,7 @@ import com.neurchi.advisor.common.port.adapter.persistence.hibernate.AbstractHib
 import com.neurchi.advisor.identityaccess.domain.model.identity.TenantId;
 import com.neurchi.advisor.identityaccess.domain.model.identity.User;
 import com.neurchi.advisor.identityaccess.domain.model.identity.UserRepository;
+import org.hibernate.NaturalIdLoadAccess;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
@@ -51,12 +52,11 @@ public class HibernateUserRepository extends AbstractHibernateSession implements
 
     @Override
     public Optional<User> userWithUsername(final TenantId tenantId, final String username) {
-        Query<User> query = this.session().createQuery(
-                "from User where tenantId = ?1 and username = ?2", User.class);
+        NaturalIdLoadAccess<User> query = this.session()
+                .byNaturalId(User.class)
+                .using("tenantId", tenantId)
+                .using("username", username);
 
-        query.setParameter(1, tenantId);
-        query.setParameter(2, username);
-
-        return query.uniqueResultOptional();
+        return query.loadOptional();
     }
 }

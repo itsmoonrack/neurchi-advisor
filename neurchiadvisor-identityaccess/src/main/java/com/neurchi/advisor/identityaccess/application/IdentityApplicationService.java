@@ -86,21 +86,24 @@ public class IdentityApplicationService {
     }
 
     @Transactional
-    public void extendAccessToken(final ExtendAccessTokenCommand command) {
-        User user = this.existingUser(command.getTenantId(), command.getUsername());
-
-        user.extendAccessToken(
-                new AccessToken(
-                        command.getAccessToken(),
-                        command.getTokenType(),
-                        command.getExpiresIn()));
-    }
-
-    @Transactional
     public void changeUserPersonalName(final ChangeUserPersonalNameCommand command) {
         User user = this.existingUser(command.getTenantId(), command.getUsername());
 
         user.person().changeName(new FullName(command.getFirstName(), command.getLastName()));
+    }
+
+    @Transactional
+    public String offerLimitedRegistrationInvitation(
+            final TenantId tenantId,
+            final String description) {
+        Tenant tenant = this.existingTenant(tenantId.id());
+
+        RegistrationInvitation invitation =
+                tenant
+                        .redefineRegistrationInvitationAs(description)
+                        .orElse(tenant.offerRegistrationInvitation(description).shortLived());
+
+        return invitation.invitationId();
     }
 
     @Transactional
@@ -162,10 +165,6 @@ public class IdentityApplicationService {
                 tenant.registerUser(
                         command.getInvitationIdentifier(),
                         command.getUsername(),
-                        new AccessToken(
-                                command.getAccessToken(),
-                                command.getTokenType(),
-                                command.getExpiresIn()),
                         new Enablement(
                                 command.isEnabled(),
                                 command.getStartDate(),

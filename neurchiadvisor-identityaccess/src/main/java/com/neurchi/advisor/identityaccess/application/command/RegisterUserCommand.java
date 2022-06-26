@@ -7,9 +7,6 @@ public final class RegisterUserCommand {
     private String tenantId;
     private String invitationIdentifier;
     private String username;
-    private String accessToken;
-    private String tokenType;
-    private LocalDateTime expiresIn;
     private String firstName;
     private String lastName;
     private boolean enabled;
@@ -21,9 +18,6 @@ public final class RegisterUserCommand {
             final String tenantId,
             final String invitationIdentifier,
             final String username,
-            final String accessToken,
-            final String tokenType,
-            final LocalDateTime expiresIn,
             final String firstName,
             final String lastName,
             final boolean enabled,
@@ -34,9 +28,6 @@ public final class RegisterUserCommand {
         this.tenantId = tenantId;
         this.invitationIdentifier = invitationIdentifier;
         this.username = username;
-        this.accessToken = accessToken;
-        this.tokenType = tokenType;
-        this.expiresIn = expiresIn;
         this.firstName = firstName;
         this.lastName = lastName;
         this.enabled = enabled;
@@ -67,30 +58,6 @@ public final class RegisterUserCommand {
 
     public void setUsername(final String username) {
         this.username = username;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(final String accessToken) {
-        this.accessToken = accessToken;
-    }
-
-    public String getTokenType() {
-        return tokenType;
-    }
-
-    public void setTokenType(final String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public LocalDateTime getExpiresIn() {
-        return expiresIn;
-    }
-
-    public void setExpiresIn(final LocalDateTime expiresIn) {
-        this.expiresIn = expiresIn;
     }
 
     public String getFirstName() {

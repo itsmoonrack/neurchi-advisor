@@ -10,3 +10,11 @@ Accept: application/*+json
 
 GET  http://localhost:9000/tenants/B0058877-E21D-4F6E-8BA1-7889556D320B/users/sbernard/inRole/Administrator
 Accept: application/*+xml
+
+###
+
+GET  http://localhost:9000/tenants/FE46D323-612F-41ED-A012-21243525B3B8/users/test25007
+Accept: application/*+json
+
+###
+

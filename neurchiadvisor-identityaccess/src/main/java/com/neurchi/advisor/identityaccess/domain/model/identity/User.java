@@ -11,7 +11,6 @@ import java.util.Objects;
  */
 public class User extends ConcurrencySafeEntity {
 
-    private AccessToken accessToken;
     private Enablement enablement;
     private Person person;
     private TenantId tenantId;
@@ -23,21 +22,6 @@ public class User extends ConcurrencySafeEntity {
 
     public void changePersonalName(final FullName personalName) {
         this.person().changeName(personalName);
-    }
-
-    public void extendAccessToken(final AccessToken accessToken) {
-        if (!this.accessToken().equals(accessToken)) {
-            this.assertArgumentTrue(accessToken.expiresLaterThan(this.accessToken()), "The access token must expires later than current.");
-
-            this.setAccessToken(accessToken);
-
-            DomainEventPublisher
-                    .instance()
-                    .publish(new UserAccessTokenExtended(
-                            this.tenantId(),
-                            this.username(),
-                            accessToken));
-        }
     }
 
     public void defineEnablement(final Enablement enablement) {
@@ -53,10 +37,6 @@ public class User extends ConcurrencySafeEntity {
 
     public TenantId tenantId() {
         return tenantId;
-    }
-
-    public AccessToken accessToken() {
-        return this.accessToken;
     }
 
     public Enablement enablement() {
@@ -99,13 +79,11 @@ public class User extends ConcurrencySafeEntity {
     protected User(
             final TenantId tenantId,
             final String username,
-            final AccessToken accessToken,
             final Enablement enablement,
             final Person person) {
 
         this.setTenantId(tenantId);
         this.setUsername(username);
-        this.setAccessToken(accessToken);
         this.setEnablement(enablement);
         this.setPerson(person);
 
@@ -142,12 +120,6 @@ public class User extends ConcurrencySafeEntity {
         this.assertArgumentNotNull(person, "The person is required.");
 
         this.person = person;
-    }
-
-    private void setAccessToken(final AccessToken accessToken) {
-        this.assertArgumentNotNull(accessToken, "The access token is required.");
-
-        this.accessToken = accessToken;
     }
 
     private void setEnablement(final Enablement enablement) {

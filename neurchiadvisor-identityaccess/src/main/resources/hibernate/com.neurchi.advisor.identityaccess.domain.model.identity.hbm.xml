@@ -44,7 +44,7 @@
         <version name="concurrencyVersion" column="concurrency_version"/>
         <component name="contactInformation" class="ContactInformation">
             <component name="emailAddress" class="EmailAddress">
-                <property name="address" column="contact_information_email_address_address"/>
+                <property name="address" column="contact_information_email_address"/>
             </component>
         </component>
         <component name="name" class="FullName">
@@ -75,38 +75,39 @@
         <id name="id" column="id" unsaved-value="-1">
             <generator class="native"/>
         </id>
+        <natural-id>
+            <component name="tenantId" class="TenantId">
+                <property name="id" column="tenant_id"/>
+            </component>
+            <property name="username" column="username" unique="true" update="false"/>
+        </natural-id>
         <version name="concurrencyVersion" column="concurrency_version"/>
         <component name="accessToken" class="AccessToken">
             <property name="accessToken" column="access_token"/>
             <property name="tokenType" column="access_token_type"/>
-            <property name="expiresIn" column="access_token_expires_in"/>
-        </component>
-        <component name="enablement" class="Enablement">
-            <property name="enabled" column="enablement_enabled"/>
-            <property name="endDate" column="enablement_end_date"/>
-            <property name="startDate" column="enablement_start_date"/>
+            <property name="expiresIn" column="access_token_expires"/>
         </component>
         <one-to-one name="person" class="Person" cascade="all" lazy="false"/>
-        <component name="tenantId" class="TenantId">
-            <property name="id" column="tenant_id"/>
-        </component>
-        <property name="username" column="username" unique="true" update="false"/>
     </class>
 
     <class name="Tenant" table="table_tenant" lazy="true">
+        <cache usage="read-write"/>
         <id name="id" type="long" column="id" unsaved-value="-1">
             <generator class="native"/>
         </id>
+        <natural-id>
+            <property name="name" column="name"/>
+        </natural-id>
         <version name="concurrencyVersion" column="concurrency_version"/>
+        <property name="secret" column="secret" not-null="true"/>
+        <component name="tenantId" class="TenantId">
+            <property name="id" column="tenant_id"/>
+        </component>
         <property name="active" column="active"/>
         <property name="description" column="description"/>
-        <property name="name" column="name"/>
         <set name="registrationInvitations" cascade="all,delete-orphan" lazy="true">
             <key column="tenant" not-null="true"/>
             <one-to-many class="RegistrationInvitation"/>
         </set>
-        <component name="tenantId" class="TenantId">
-            <property name="id" column="tenant_id"/>
-        </component>
     </class>
 </hibernate-mapping>

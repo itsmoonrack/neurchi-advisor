@@ -6,7 +6,6 @@ import com.neurchi.advisor.identityaccess.domain.model.IdentityAccessTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +50,7 @@ class TenantTest extends IdentityAccessTest {
                 this.tenantProvisioningService()
                         .provisionTenant(
                                 FIXTURE_TENANT_NAME,
+                                FIXTURE_TENANT_SECRET,
                                 FIXTURE_TENANT_DESCRIPTION,
                                 "10157329112631392",
                                 this.obtainExtendedAccessToken(),
@@ -157,20 +157,20 @@ class TenantTest extends IdentityAccessTest {
         RegistrationInvitation registrationInvitation =
                 this.registrationInvitationEntity(tenant);
 
-        Optional<User> user =
+        User user =
                 tenant.registerUser(
                         registrationInvitation.invitationId(),
                         FIXTURE_USERNAME,
-                        this.obtainExtendedAccessToken(),
-                        new Enablement(true, null, null),
-                        this.personEntity(tenant));
+                        this.authenticationService(),
+                        this.userPersonService())
+                        .orElseThrow();
 
-        assertTrue(user.isPresent());
+        assertNotNull(user);
 
-        this.userRepository().add(user.get());
+        this.userRepository().add(user);
 
-        assertNotNull(user.get().enablement());
-        assertNotNull(user.get().person());
-        assertNotNull(user.get().userDescriptor());
+        assertNotNull(user.accessToken());
+        assertNotNull(user.person());
+        assertNotNull(user.userDescriptor());
     }
 }

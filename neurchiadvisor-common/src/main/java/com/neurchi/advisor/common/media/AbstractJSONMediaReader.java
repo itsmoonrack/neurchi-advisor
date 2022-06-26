@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.NullNode;
 import com.neurchi.advisor.common.serializer.AbstractSerializer;
 
 import java.time.Instant;
+import java.util.Optional;
 
 public abstract class AbstractJSONMediaReader {
 
@@ -53,6 +54,10 @@ public abstract class AbstractJSONMediaReader {
 
     public String stringValue(final String... keys) {
         return this.stringValue(this.representation(), keys);
+    }
+
+    public Optional<String> optionalStringValue(final String... keys) {
+        return Optional.ofNullable(this.stringValue(keys));
     }
 
     protected JsonNode navigateTo(final JsonNode node, String... keys) {

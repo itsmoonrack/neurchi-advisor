@@ -1,0 +1,28 @@
+GET https://www.facebook.com/v9.0/dialog/oauth?client_id={{app-id}}&redirect_uri={{redirect-uri}}&state={{state-param}}&scope=email,groups_access_member_info
+
+###
+
+GET https://graph.facebook.com/v9.0/288497445368675?fields=id,name,daily_active_users_rank,creator_uid&access_token=288497445368675|NuwDZJn0XFlmiEbdzKNdkWfBCh4
+
+###
+
+GET https://graph.facebook.com/v9.0/288497445368675?fields=id,name,creator_uid
+Authorization: Bearer {{Bearer-Token}}
+
+###
+
+GET https://graph.facebook.com/v9.0/me?fields=id,first_name,last_name,email
+Authorization: Bearer {{Bearer-Token}}
+If-None-Match: "59dfdfc160094080a622362aa753fb8dc59b7426"
+
+###
+
+GET https://graph.facebook.com/v9.0/me/groups?limit=1000&fields=id, administrator
+Authorization: Bearer {{Bearer-Token}}
+
+###
+
+GET https://graph.facebook.com/v9.0/oauth/access_token?client_id={{Application-Id}}&client_secret={{Application-Secret}}&grant_type=fb_exchange_token&fb_exchange_token={{Bearer-Token}}
+Authorization: Bearer {{Bearer-Token}}
+
+###

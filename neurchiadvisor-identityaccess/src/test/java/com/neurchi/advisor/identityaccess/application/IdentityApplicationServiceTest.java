@@ -144,34 +144,6 @@ class IdentityApplicationServiceTest extends ApplicationServiceTest {
     }
 
     @Test
-    public void TestExtendAccessToken() {
-        User user = this.userAggregate();
-        userRepository().add(user);
-
-        this
-                .identityApplicationService()
-                .extendAccessToken(
-                        new ExtendAccessTokenCommand(
-                                user.tenantId().id(),
-                                user.username(),
-                                FIXTURE_ACCESS_TOKEN,
-                                FIXTURE_TOKEN_TYPE,
-                                FIXTURE_EXPIRES_IN));
-
-        User changedUser =
-                userRepository()
-                        .userWithUsername(
-                                user.tenantId(),
-                                user.username())
-                        .orElse(null);
-
-        assertNotNull(changedUser);
-        assertEquals(FIXTURE_ACCESS_TOKEN, changedUser.accessToken().accessToken());
-        assertEquals(FIXTURE_TOKEN_TYPE, changedUser.accessToken().tokenType());
-        assertEquals(FIXTURE_EXPIRES_IN, changedUser.accessToken().expiresIn());
-    }
-
-    @Test
     public void TestChangeUserPersonalName() {
         User user = this.userAggregate();
         userRepository().add(user);

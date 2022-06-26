@@ -9,11 +9,11 @@ import com.neurchi.advisor.common.port.adapter.messaging.rabbitmq.ExchangeListen
 import org.springframework.stereotype.Component;
 
 @Component
-public class RabbitMQGroupSubscriptionStartedListener extends ExchangeListener {
+public class RabbitMQSubscriptionStartedListener extends ExchangeListener {
 
     private final GroupApplicationService groupApplicationService;
 
-    RabbitMQGroupSubscriptionStartedListener(final GroupApplicationService groupApplicationService) {
+    RabbitMQSubscriptionStartedListener(final GroupApplicationService groupApplicationService) {
         this.groupApplicationService = groupApplicationService;
     }
 

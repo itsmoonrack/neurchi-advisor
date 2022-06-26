@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="followStoreEventDispatcher" class="com.neurchi.advisor.subscription.port.adapter.event.FollowStoreEventDispatcher">
+        <constructor-arg ref="subscriptionDataSource"/>
+    </bean>
+
+    <bean id="mysqlGroupProjection" class="com.neurchi.advisor.subscription.port.adapter.persistence.view.MySQLGroupProjection">
+        <constructor-arg ref="mysqlProjectionDispatcher"/>
+    </bean>
+
+    <bean id="mysqlProjectionDispatcher" class="com.neurchi.advisor.subscription.port.adapter.persistence.view.MySQLProjectionDispatcher">
+        <constructor-arg ref="followStoreEventDispatcher"/>
+    </bean>
+
+</beans>

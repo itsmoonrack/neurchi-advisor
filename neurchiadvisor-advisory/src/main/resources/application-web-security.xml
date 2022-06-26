@@ -9,7 +9,7 @@
     <security:http auto-config="true">
         <security:csrf disabled="true"/>
 
-        <security:intercept-url pattern="/" access="permitAll"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
         <security:intercept-url pattern="/apps/group/list-default.html" access="permitAll"/>
         <security:intercept-url pattern="/apps/*" access="isAuthenticated"/>
 
@@ -17,5 +17,9 @@
     </security:http>
 
     <security:global-method-security pre-post-annotations="enabled"/>
+
+    <security:authentication-manager>
+
+    </security:authentication-manager>
 
 </beans>

@@ -38,6 +38,12 @@ public class RegistrationInvitation extends ConcurrencySafeEntity {
         return isIdentified;
     }
 
+    public RegistrationInvitation shortLived() {
+        setStartingOn(LocalDateTime.now());
+        setUntil(LocalDateTime.now().plusHours(1));
+        return this;
+    }
+
     public RegistrationInvitation openEnded() {
         setStartingOn(null);
         setUntil(null);

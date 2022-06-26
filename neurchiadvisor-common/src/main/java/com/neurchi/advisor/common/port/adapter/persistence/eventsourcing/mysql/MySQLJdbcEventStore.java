@@ -112,12 +112,25 @@ public final class MySQLJdbcEventStore implements EventStore {
     }
 
     @Override
+    public void purge() {
+
+        try (Connection connection = this.connection()) {
+
+            connection.createStatement().execute("delete from table_event_store");
+
+            connection.commit();
+        } catch (Throwable t) {
+            throw new EventStoreException("Unable to purge event store: " + t.getMessage(), t);
+        }
+    }
+
+    @Override
     public void registerEventNotifiable(final EventNotifiable eventNotifiable) {
 
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         // no-op
     }
 

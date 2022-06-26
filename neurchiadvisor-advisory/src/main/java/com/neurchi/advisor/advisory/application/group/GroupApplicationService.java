@@ -12,15 +12,10 @@ import com.neurchi.advisor.advisory.domain.model.tenant.TenantId;
 import com.neurchi.advisor.common.domain.model.process.ProcessId;
 import com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTracker;
 import com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTrackerRepository;
-import com.neurchi.advisor.common.port.adapter.service.facebook.types.UserGroup;
-import com.restfb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +26,7 @@ import java.time.LocalDateTime;
 @Service
 public class GroupApplicationService {
 
-    @Value("${security.oauth2.client.client-secret}")
+//    @Value("${security.oauth2.client.client-secret}")
     private String appSecret; // TODO: Move this
 
     private final GroupRepository groupRepository;
@@ -267,20 +262,20 @@ public class GroupApplicationService {
 
         SecurityContext context = SecurityContextHolder.getContext();
 
-        if (context.getAuthentication() instanceof OAuth2Authentication authentication) {
-            if (authentication.getDetails() instanceof OAuth2AuthenticationDetails details) {
-                // TODO: optimize this
-                FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, Version.VERSION_7_0);
-
-                Connection<UserGroup> groupConnection = facebookClient.fetchConnection("me/groups", UserGroup.class,
-                        Parameter.with("limit", 1),
-                        Parameter.with("fields", "id"));
-
-                if (groupConnection.getData().size() > 0) {
-                    availability = SubscriptionAvailability.Requested;
-                }
-            }
-        }
+//        if (context.getAuthentication() instanceof OAuth2Authentication authentication) {
+//            if (authentication.getDetails() instanceof OAuth2AuthenticationDetails details) {
+//                // TODO: optimize this
+//                FacebookClient facebookClient = new DefaultFacebookClient(details.getTokenValue(), this.appSecret, Version.VERSION_7_0);
+//
+//                Connection<UserGroup> groupConnection = facebookClient.fetchConnection("me/groups", UserGroup.class,
+//                        Parameter.with("limit", 1),
+//                        Parameter.with("fields", "id"));
+//
+//                if (groupConnection.getData().size() > 0) {
+//                    availability = SubscriptionAvailability.Requested;
+//                }
+//            }
+//        }
 
         return availability;
     }

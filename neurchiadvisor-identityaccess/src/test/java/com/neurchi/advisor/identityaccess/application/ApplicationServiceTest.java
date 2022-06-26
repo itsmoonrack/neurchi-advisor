@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDateTime;
-
 @ExtendWith({SpringExtension.class})
 @ContextConfiguration(locations = {
         "classpath:application-context-common.xml",
@@ -30,10 +28,7 @@ public abstract class ApplicationServiceTest {
     protected static final String FIXTURE_USER_EMAIL_ADDRESS = "jdoe@saasovation.com";
     protected static final String FIXTURE_USER_EMAIL_ADDRESS2 = "zdoe@saasovation.com";
     protected static final String FIXTURE_USERNAME = "jdoe";
-    protected static final String FIXTURE_ACCESS_TOKEN = "access-token";
-    protected static final String FIXTURE_TOKEN_TYPE = "bearer";
-    protected static final LocalDateTime FIXTURE_EXPIRES_IN = LocalDateTime.now().plusDays(90);
-    protected static final String FIXTURE_USERNAME2 = "zdoe";
+    protected static final String FIXTURE_CODE_PARAMETER = "core-parameter";
 
     @Autowired
     protected EventStore eventStore;
@@ -83,7 +78,6 @@ public abstract class ApplicationServiceTest {
                                     FIXTURE_TENANT_NAME,
                                     FIXTURE_TENANT_DESCRIPTION,
                                     "sbernard",
-                                    new AccessToken(FIXTURE_ACCESS_TOKEN, FIXTURE_TOKEN_TYPE, FIXTURE_EXPIRES_IN),
                                     new FullName("Sylvain", "Bernard"),
                                     new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS));
         }
@@ -101,15 +95,9 @@ public abstract class ApplicationServiceTest {
         User user =
                 tenant.registerUser(
                         invitation.invitationId(),
-                        "nberjaud",
-                        new AccessToken(FIXTURE_ACCESS_TOKEN, FIXTURE_TOKEN_TYPE, FIXTURE_EXPIRES_IN),
-                        Enablement.indefiniteEnablement(),
-                        new Person(
-                                tenant.tenantId(),
-                                new FullName("Noélie", "Berjaud"),
-                                new ContactInformation(
-                                        new EmailAddress(FIXTURE_USER_EMAIL_ADDRESS))))
-                        .orElseThrow();
+                        FIXTURE_USERNAME,
+                        FIXTURE_CODE_PARAMETER)
+                .orElseThrow();
 
         return user;
     }

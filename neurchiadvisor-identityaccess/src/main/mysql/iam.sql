@@ -31,12 +31,12 @@ CREATE TABLE `table_group_member`
 CREATE TABLE `table_person`
 (
     -- primary key is my parent's pk, which is table 'table_user'
-    `id`                                        bigint       NOT NULL,
-    `contact_information_email_address_address` varchar(100) NOT NULL,
-    `name_first_name`                           varchar(50)  NOT NULL,
-    `name_last_name`                            varchar(50)  NOT NULL,
-    `tenant_id`                                 varchar(36)  NOT NULL,
-    `concurrency_version`                       int          NOT NULL,
+    `id`                                bigint      NOT NULL,
+    `contact_information_email_address` varchar(100),
+    `name_first_name`                   varchar(50) NOT NULL,
+    `name_last_name`                    varchar(50) NOT NULL,
+    `tenant_id`                         varchar(36) NOT NULL,
+    `concurrency_version`               int         NOT NULL,
     KEY `k_tenant_id` (`tenant_id`),
     CONSTRAINT `fk_table_person_table_user` FOREIGN KEY (`id`) REFERENCES `table_user` (`id`),
     PRIMARY KEY (`id`)
@@ -80,6 +80,7 @@ CREATE TABLE `table_tenant`
     `active`              tinyint      NOT NULL,
     `description`         varchar(100),
     `name`                varchar(100) NOT NULL,
+    `secret`              varchar(100) NOT NULL,
     `tenant_id`           varchar(36)  NOT NULL,
     `concurrency_version` int          NOT NULL,
     UNIQUE KEY `k_name` (`name`),
@@ -89,16 +90,13 @@ CREATE TABLE `table_tenant`
 
 CREATE TABLE `table_user`
 (
-    `id`                      bigint       NOT NULL auto_increment,
-    `access_token`            text         NOT NULL,
-    `access_token_type`       varchar(36)  NOT NULL,
-    `access_token_expires_in` datetime     NOT NULL,
-    `enablement_enabled`      tinyint      NOT NULL,
-    `enablement_end_date`     datetime,
-    `enablement_start_date`   datetime,
-    `tenant_id`               varchar(36)  NOT NULL,
-    `username`                varchar(250) NOT NULL,
-    `concurrency_version`     int          NOT NULL,
+    `id`                   bigint       NOT NULL auto_increment,
+    `access_token`         text         NOT NULL,
+    `access_token_type`    varchar(36)  NOT NULL,
+    `access_token_expires` datetime     NOT NULL,
+    `tenant_id`            varchar(36)  NOT NULL,
+    `username`             varchar(250) NOT NULL,
+    `concurrency_version`  int          NOT NULL,
     KEY `k_tenant_id` (`tenant_id`),
     UNIQUE KEY `k_tenant_id_username` (`tenant_id`, `username`),
     PRIMARY KEY (`id`)

@@ -4,21 +4,19 @@ import com.neurchi.advisor.common.domain.model.process.TimeConstrainedProcessTra
 import com.neurchi.advisor.common.port.adapter.persistence.hibernate.HibernateTimeConstrainedProcessTrackerRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import java.util.Locale;
 
 @EnableScheduling
-@EnableOAuth2Client
-@EnableOAuth2Sso
 @SpringBootApplication
-@ImportResource("classpath:application-context-advisory.xml")
+@ImportResource({
+        "classpath:application-context-advisory.xml",
+        "classpath:application-web-security.xml"})
 public class NeurchiAdvisorWebApplication {
 
     public static void main(String[] args) {

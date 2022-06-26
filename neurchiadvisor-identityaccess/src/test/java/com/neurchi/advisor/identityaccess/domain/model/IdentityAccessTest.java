@@ -12,6 +12,7 @@ public abstract class IdentityAccessTest extends DomainTest {
 
     protected static final String FIXTURE_TENANT_DESCRIPTION = "This is a test tenant.";
     protected static final String FIXTURE_TENANT_NAME = "Test Tenant";
+    protected static final String FIXTURE_TENANT_SECRET = "Test Tenant Secret";
     protected static final String FIXTURE_USER_EMAIL_ADDRESS = "sbernard@neurchiadvisor.com";
     protected static final String FIXTURE_USER_EMAIL_ADDRESS2 = "nbernard@neurchiadvisor.com";
     protected static final String FIXTURE_USERNAME = "sbernard";
@@ -57,6 +58,7 @@ public abstract class IdentityAccessTest extends DomainTest {
                     new Tenant(
                             tenantId,
                             FIXTURE_TENANT_NAME,
+                            FIXTURE_TENANT_SECRET,
                             FIXTURE_TENANT_DESCRIPTION,
                             true);
 
@@ -83,10 +85,8 @@ public abstract class IdentityAccessTest extends DomainTest {
         return tenant.registerUser(
                 registrationInvitation.invitationId(),
                 FIXTURE_USERNAME,
-                this.obtainExtendedAccessToken(),
-                new Enablement(true, null, null),
-                this.personEntity(tenant))
-                .orElse(null);
+                this.authenticationService(),
+                this.userPersonService()).orElseThrow();
     }
 
     protected User userAggregate2() {
@@ -98,10 +98,8 @@ public abstract class IdentityAccessTest extends DomainTest {
         return tenant.registerUser(
                 registrationInvitation.invitationId(),
                 FIXTURE_USERNAME2,
-                this.obtainExtendedAccessToken(),
-                new Enablement(true, null, null),
-                this.personEntity2(tenant))
-                .orElse(null);
+                this.authenticationService(),
+                this.userPersonService()).orElseThrow();
     }
 
     protected LocalDateTime dayBeforeYesterday() {
@@ -142,6 +140,14 @@ public abstract class IdentityAccessTest extends DomainTest {
 
     protected RoleRepository roleRepository() {
         return applicationContext.getBean(RoleRepository.class);
+    }
+
+    protected AuthenticationService authenticationService() {
+        return applicationContext.getBean(AuthenticationService.class);
+    }
+
+    protected UserPersonService userPersonService() {
+        return applicationContext.getBean(UserPersonService.class);
     }
 
     protected GroupMemberService groupMemberService() {

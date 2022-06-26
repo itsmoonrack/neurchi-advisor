@@ -37,7 +37,7 @@ public class RabbitMQGroupSubscriptionRequestedListener extends ExchangeListener
             return;
         }
 
-        final String tenantId = reader.eventStringValue("tenantId.id");
+        final String tenantId = reader.eventStringValue("tenantId");
         final String groupId = reader.eventStringValue("group.id");
 
         this.groupApplicationService
@@ -89,7 +89,7 @@ public class RabbitMQGroupSubscriptionRequestedListener extends ExchangeListener
 
         properties.put("command", COMMAND);
 
-        properties.put("tenantId", reader.eventStringValue("tenantId.id"));
+        properties.put("tenantId", reader.eventStringValue("tenantId"));
 
         final GroupSubscriptionExclusiveOwnerId exclusiveOwnerId =
                 new GroupSubscriptionExclusiveOwnerId(

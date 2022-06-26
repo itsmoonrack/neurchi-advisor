@@ -42,7 +42,7 @@ public class UserTest extends IdentityAccessTest {
                     }
                 });
 
-        user.defineEnablement(new Enablement(false, null, null));
+//        user.defineEnablement(new Enablement(false, null, null));
 
         assertFalse(user.isEnabled());
         assertTrue(handled);
@@ -67,12 +67,12 @@ public class UserTest extends IdentityAccessTest {
                         return UserEnablementChanged.class;
                     }
                 });
-
-        user.defineEnablement(
-                new Enablement(
-                        true,
-                        this.today(),
-                        this.tomorrow()));
+//
+//        user.defineEnablement(
+//                new Enablement(
+//                        true,
+//                        this.today(),
+//                        this.tomorrow()));
 
         assertTrue(user.isEnabled());
         assertTrue(handled);
@@ -98,11 +98,11 @@ public class UserTest extends IdentityAccessTest {
                     }
                 });
 
-        user.defineEnablement(
-                new Enablement(
-                        true,
-                        this.dayBeforeYesterday(),
-                        this.yesterday()));
+//        user.defineEnablement(
+//                new Enablement(
+//                        true,
+//                        this.dayBeforeYesterday(),
+//                        this.yesterday()));
 
         assertFalse(user.isEnabled());
         assertTrue(handled);
@@ -128,14 +128,14 @@ public class UserTest extends IdentityAccessTest {
                     }
                 });
 
-        Executable executable = () ->
-                user.defineEnablement(
-                        new Enablement(
-                                true,
-                                this.tomorrow(),
-                                this.today()));
-
-        assertThrows(IllegalArgumentException.class, executable);
+//        Executable executable = () ->
+//                user.defineEnablement(
+//                        new Enablement(
+//                                true,
+//                                this.tomorrow(),
+//                                this.today()));
+//
+//        assertThrows(IllegalArgumentException.class, executable);
         assertFalse(handled);
     }
 

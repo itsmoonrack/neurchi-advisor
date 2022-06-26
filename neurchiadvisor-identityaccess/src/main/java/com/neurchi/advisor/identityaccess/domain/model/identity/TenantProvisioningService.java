@@ -24,7 +24,6 @@ public class TenantProvisioningService {
             final String tenantName,
             final String tenantDescription,
             final String administratorUsername,
-            final AccessToken administratorAccessToken,
             final FullName administratorName,
             final EmailAddress emailAddress) {
 
@@ -40,7 +39,6 @@ public class TenantProvisioningService {
             this.registerAdministratorFor(
                     tenant,
                     administratorUsername,
-                    administratorAccessToken,
                     administratorName,
                     emailAddress);
 
@@ -59,7 +57,6 @@ public class TenantProvisioningService {
     private void registerAdministratorFor(
             final Tenant tenant,
             final String administratorUsername,
-            final AccessToken administratorAccessToken,
             final FullName administratorName,
             final EmailAddress emailAddress) {
 
@@ -70,7 +67,6 @@ public class TenantProvisioningService {
                 tenant.registerUser(
                         invitation.invitationId(),
                         administratorUsername,
-                        administratorAccessToken,
                         Enablement.indefiniteEnablement(),
                         new Person(
                                 tenant.tenantId(),

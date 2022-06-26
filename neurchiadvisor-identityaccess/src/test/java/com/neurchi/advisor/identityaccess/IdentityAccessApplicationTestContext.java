@@ -5,12 +5,12 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ImportResource;
 
+@SpringBootConfiguration
+@EnableAutoConfiguration
 @ImportResource({
         "classpath:application-context-common.xml",
         "classpath:application-context-identityaccess-application.xml",
         "classpath:application-context-identityaccess-test.xml"})
-@SpringBootConfiguration
-@EnableAutoConfiguration
 public class IdentityAccessApplicationTestContext {
 
     public static void main(String[] args) {
